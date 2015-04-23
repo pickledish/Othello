@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Brandon on 4/18/15.
+ * Created by Brandon on 4/18/16.
  */
 
 public class GameButton extends JButton implements Tile {
