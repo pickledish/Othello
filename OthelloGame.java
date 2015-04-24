@@ -1,11 +1,17 @@
 /**
  * Created by Brandon on 4/21/15.
  *
+ * The game class! Manages each in-game part of the project
  *
- * Changed again
+ * STAYS TOTALLY SEPARATE FROM THE GAMEWINDOW CLASS / ALL GUI ELEMENTS PLS
+ *
+ * But yeah, logic stuff goes here. Each method should be explained well enough, right?
+ *
  */
+
 public class OthelloGame {
 
+	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
 	boolean flip = false;
 
@@ -15,6 +21,7 @@ public class OthelloGame {
 
 	}
 
+	// Sets the middle 4 tiles to their starting colors, and toggles each to disabled
 	public void setUp() {
 
 		boardState[3][3].toggle();
@@ -28,6 +35,8 @@ public class OthelloGame {
 
 	}
 
+	// Returns an array of booleans, each one corresponding to a button on the board
+	// If the boolean for the location is true, then it's a viable move! If false, leave it disabled
 	public boolean[][] getViableMoves() {
 
 		boolean[][] returner = new boolean[8][8];
@@ -36,6 +45,7 @@ public class OthelloGame {
 			for (int j = 0; j < 8; j++){
 
 
+				// Checks
 				boolean[][] truths = new boolean[3][3];
 
 				for (int k = -1; k <= 1; k++) {
@@ -61,6 +71,7 @@ public class OthelloGame {
 		return returner;
 	}
 
+	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
 	public void tileClicked(Tile pressed) {
 
 		if (!pressed.getToggled()) {

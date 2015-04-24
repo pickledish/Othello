@@ -1,5 +1,10 @@
 /**
  * Created by Brandon on 4/18/15.
+ *
+ * The GUI class! Handles all visual parts of the project
+ *
+ * Makes a shitton of GameButtons and throws them onto an 8x8 board for all to see
+ *
  */
 
 import javax.swing.*;
@@ -13,6 +18,7 @@ public class GameWindow {
 
 	public GameWindow() {}
 
+	// Makes the window, using GridBagLayout cause best layout
 	public void drawWindow() {
 
 		JFrame window = new JFrame("Othello");
@@ -21,6 +27,7 @@ public class GameWindow {
 
 		buttons = new GameButton[8][8];
 
+		// Big-ass button adding loop! Also adds the actionListeners so they can be clicked
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				buttons[i][j] = new GameButton("");
@@ -47,7 +54,7 @@ public class GameWindow {
 		game.setUp();
 		refreshBoard();
 
-
+		// Makes sure that all buttons that should be disabled, ARE disabled for the first opening
 		boolean viable[][] = game.getViableMoves();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
@@ -62,6 +69,7 @@ public class GameWindow {
 
 	}
 
+	// For use after a button is pressed! Updates the board to represent all newly enabled/disabled buttons
 	public void refreshBoard() {
 
 		boolean viable[][] = game.getViableMoves();
