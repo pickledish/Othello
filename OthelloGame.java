@@ -2,7 +2,7 @@
  * Created by Brandon on 4/21/15.
  *
  *
- * Changed
+ * Changed again
  */
 public class OthelloGame {
 
