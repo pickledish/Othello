@@ -35,41 +35,24 @@ public class OthelloGame {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++){
 
-				boolean a1, a2, a3, a4;
 
-				try { a1 = boardState[i - 1][j].getToggled();
-				} catch (ArrayIndexOutOfBoundsException e) {a1 = false;}
+				boolean[][] truths = new boolean[3][3];
 
-				try { a2 = boardState[i][j - 1].getToggled();
-				} catch (ArrayIndexOutOfBoundsException e) {a2 = false;}
+				for (int k = -1; k <= 1; k++) {
+					for (int l = -1; l <= 1; l++) {
 
-				try { a3 = boardState[i + 1][j].getToggled();
-				} catch (ArrayIndexOutOfBoundsException e) {a3 = false;}
+						try { truths[k+1][l+1] = boardState[i+k][j+l].getToggled();
+						} catch (ArrayIndexOutOfBoundsException e) { truths[k+1][l+1] = false; }
 
-				try { a4 = boardState[i][j + 1].getToggled();
-				} catch (ArrayIndexOutOfBoundsException e) {a4 = false;}
-
-				if (!(a1 || a2 || a3 || a4)) {
-					returner[i][j] = false;
-					continue;
+					}
 				}
 
-				returner[i][j] = true;
+				boolean flag = false;
+				for (boolean[] a : truths)
+					for (boolean b : a)
+						if (b) flag = true;
 
-				/* // I don't think this code does anything?
-				boolean temp = false;
-				for (int p = 0; p < 8; p++) {
-					if (boardState[i][p].getToggled()) temp = true;
-					if (boardState[p][j].getToggled()) temp = true;
-				}
-
-				if (!temp) {
-
-					returner[i][j] = false;
-					continue;
-				}
-				*/
-
+				returner[i][j] = flag;
 
 				// TODO: Insert color-specific code here
 			}
