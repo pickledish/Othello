@@ -1,0 +1,61 @@
+
+
+Othello AI Psuedocode
+
+class othelloAI
+{
+
+	public availablemoves(board current)
+	{
+
+		finds viable moves on the board
+		*some of code already avaiable in the getViableMoves()
+		method in OthelloGame.java
+
+		What makes a move viable?
+		you have to place the pieces in an open square that is 
+		directly across (horizontally/vertically/diagonally) from
+		a piece of the same color, whilst there are pieces of the
+		other color in between the two pieces	
+
+		returns list of possible moves	
+
+	}
+
+	public bestmove (availablemoves)
+	{
+
+		From the moves available, now we calculate which one is the
+		best move
+
+		here is where we set the parameters for which strategy we
+		want to use
+
+		**IF ONE OF THE POSSIBLE MOVE IS A CORNER TAKE IT**
+
+		**Greedy Method**
+		for(int i = 0; i<list of possible moves;i++)
+			{
+
+				insert to priority heap: number of squares
+				that would be flipped from choosing a
+				particular square.
+
+			}
+		return top choice
+
+		** Mobility Method **
+		
+		for(int i = 0; i<list of possible moves;i++)
+			{
+
+				insert to priority heap: available moves created
+				after choosing a particular square
+
+			}
+		return top choice
+	
+	
+	}
+
+}

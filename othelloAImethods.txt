@@ -150,3 +150,8 @@ game to win the game.
 	| B |  B |  B  |  B |  B | B | B | B |
 	--------------------------------------	
 
+Strategy 4: Mobility
+
+In this strategy you are trying to create the most possiblity of moves
+for yourself and limiting the moves of the opponent's movements. 
+
