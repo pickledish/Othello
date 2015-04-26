@@ -30,7 +30,7 @@ public class GameWindow {
 		// Big-ass button adding loop! Also adds the actionListeners so they can be clicked
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				buttons[i][j] = new GameButton("");
+				buttons[i][j] = new GameButton("", j, i);
 				buttons[i][j].setPreferredSize(new Dimension(80, 80));
 
 				buttons[i][j].addActionListener(new ActionListener() {
@@ -52,7 +52,6 @@ public class GameWindow {
 
 		game = new OthelloGame(buttons);
 		game.setUp();
-		refreshBoard();
 
 		// Makes sure that all buttons that should be disabled, ARE disabled for the first opening
 		boolean viable[][] = game.getViableMoves();
@@ -75,6 +74,7 @@ public class GameWindow {
 		boolean viable[][] = game.getViableMoves();
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
+				if (!buttons[i][j].getToggled()) buttons[i][j].setEnabled(false);
 				if (viable[i][j]) buttons[i][j].setEnabled(true);
 			}
 		}

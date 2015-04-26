@@ -16,9 +16,13 @@ public class GameButton extends JButton implements Tile {
 
 	public boolean toggled = false;
 	String color = null;
+	int x;
+	int y;
 
-	public GameButton(String text) {
+	public GameButton(String text, int x, int y) {
 		super(text);
+		this.x = x;
+		this.y = y;
 	}
 
 	// Sets up the button to be colored! I used a string because reasons!
@@ -50,6 +54,16 @@ public class GameButton extends JButton implements Tile {
 	@Override
 	public boolean getToggled() {
 		return toggled;
+	}
+
+	@Override
+	public int getx() {
+		return x;
+	}
+
+	@Override
+	public int gety() {
+		return y;
 	}
 
 }

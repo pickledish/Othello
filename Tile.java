@@ -14,4 +14,7 @@ public interface Tile {
 	void toggle();
 	boolean getToggled();
 
+	int getx();
+	int gety();
+
 }
