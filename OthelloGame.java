@@ -78,6 +78,8 @@ public class OthelloGame {
 
 	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
 	public void tileClicked(Tile pressed) {
+		
+		rowColorChanger(pressed);
 
 		if (!pressed.getToggled()) {
 			pressed.toggle();
@@ -133,6 +135,173 @@ public class OthelloGame {
 
 		else return 0.1;
 
+	}
+	
+	//For making colors change appropriately in all directions
+	public void rowColorChanger(Tile pressed) {
+		String currColor = current;
+		String otherColor = "red";
+		if (current == "red")
+			otherColor = "blue";
+		
+		int myX = pressed.getx();
+		int myY = pressed.gety();
+		int currX = myX;
+		int currY = myY;
+		
+		currY++;
+		if (currY < 8)
+			while (boardState[currY][currX].getColor() == otherColor && currY < 7) {
+				currY++;
+		}
+		if (currY < 8) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currY--;
+				while (currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currY--;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currX++;
+		if (currX < 8)
+			while (boardState[currY][currX].getColor() == otherColor && currX < 7) {
+				currX++;
+		}
+		if (currX != 8) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX--;
+				while (currX != myX) {
+					boardState[currY][currX].setColor(currColor);
+					currX--;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currY--;
+		if (currY >= 0)
+			while (boardState[currY][currX].getColor() == otherColor && currY > 0) {
+				currY--;
+		}
+		if (currY != -1) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currY++;
+				while (currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currY++;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currX--;
+		if (currX >= 0)
+			while (boardState[currY][currX].getColor() == otherColor && currX > 0) {
+				currX--;
+		}
+		if (currX != -1) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX++;
+				while (currX != myX) {
+					boardState[currY][currX].setColor(currColor);
+					currX++;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		
+		currX--;
+		currY--;
+		if (currX >= 0 && currY >=0)
+			while (boardState[currY][currX].getColor() == otherColor && (currX > 0 && currY > 0)) {
+				currX--;
+				currY--;
+			}
+		if (currX != -1 && currY !=-1) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX++;
+				currY++;
+				while (currX != myX && currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currX++;
+					currY++;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currX--;
+		currY++;
+		if (currX >= 0 && currY < 8)
+			while (boardState[currY][currX].getColor() == otherColor && (currX > 0 && currY < 7)) {
+				currX--;
+				currY++;
+			}
+		if (currX != -1 && currY != 8) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX++;
+				currY--;
+				while (currX != myX && currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currX++;
+					currY--;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currX++;
+		currY--;
+		if (currX < 8 && currY > -1)
+			while (boardState[currY][currX].getColor() == otherColor && (currX < 7 && currY > 0)) {
+				currX++;
+				currY--;
+			}
+		if (currX != 8 && currY !=-1) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX--;
+				currY++;
+				while (currX != myX && currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currX--;
+					currY++;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
+		currX++;
+		currY++;
+		if (currX < 8 && currY < 8)
+			while (boardState[currY][currX].getColor() == otherColor && (currX < 7 && currY < 7)) {
+				currX++;
+				currY++;
+			}
+		if (currX != 8 && currY != 8) {
+			if (boardState[currY][currX].getColor() == currColor) {
+				currX--;
+				currY--;
+				while (currX != myX && currY != myY) {
+					boardState[currY][currX].setColor(currColor);
+					currX--;
+					currY--;
+				}
+			}
+		}
+		currY = myY;
+		currX = myX;
+		
 	}
 
 	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
