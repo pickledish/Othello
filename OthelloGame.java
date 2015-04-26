@@ -374,10 +374,11 @@ public class OthelloGame {
 
 	}
 	
-	public int[][] bestMove(boolean[][] availableMoves)
+	public int[][] bestMove()
 	{
-		int[][] chooseThis = 0;
-		for(int i=0;i<availableMoves.length;i++)
+		int[][] chooseThis = 0; //this will be the move chosen
+		boolean[][] availableMoves = getViableMoves(); //finds all possible moves
+		
 		{
 			for(int j=0;j<availableMoves.length;i++)
 			{
@@ -442,19 +443,9 @@ public class OthelloGame {
 					/*
 
 					** Mobility Method **   DO EASIER WAY INSTEAD?
+				//after tree of simulated moves are made, second recursive function
+				//transverse tree backwards, calculating move with best score
 					
-					for(int i = 0; i<list of possible moves;i++)
-						{
-
-							insert to priority heap: available moves created
-							after choosing a particular square
-
-						}
-					return top choice
-				
-				
-				} 
-				 **/
 					
 				}
 				else
@@ -464,6 +455,59 @@ public class OthelloGame {
 				}
 			}
 		}
+	
+				//if corner move is avaiblae, automatically choose corner
+				if([i][j]==[0][7]){
+					chooseThis = availableMoves[0][7];
+				}
+				else if([i][j]==[0][0]){
+					chooseThis = availableMoves[0][0];
+				}
+				else if([i][j]==[7][7]){
+					chooseThis = availableMoves[7][7];
+				}
+				else if([i][j]==[7][0]){
+					chooseThis = availableMoves[7][0];
+				}
+				
+				//if a the area around corners is avaible, skip it
+				//would be a problem is these areas are the only ones left available
+				
+				else if([i][j]==[0][6]){
+					return;
+				}
+				else if([i][j]==[0][1]){
+					return;
+				}
+				else if([i][j]==[1][0]){
+					return;
+				}
+				else if([i][j]==[1][1]){
+					return;
+				}
+				else if([i][j]==[1][6]){
+					return;
+				}
+				else if([i][j]==[1][7]){
+					return;
+				}
+				else if([i][j]==[6][0]){
+					return;
+				}
+				else if([i][j]==[6][1]){
+					return;
+				}
+				else if([i][j]==[7][1]){
+					return;
+				}
+				else if([i][j]==[6][7]){
+					return;
+				}
+				else if([i][j]==[6][6]){
+					return;
+				}
+				else if([i][j]==[7][6]){
+					return;
 		
 		return chooseThis;
 	}
