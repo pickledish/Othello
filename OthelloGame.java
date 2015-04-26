@@ -384,63 +384,64 @@ public class OthelloGame {
 				if(availableMoves[i][j]==true)
 				{
 					//if corner move is avaiblae, automatically choose corner
-					if([i][j]==[0][7]==true){
+					if([i][j]==[0][7]){
 						chooseThis = availableMoves[0][7];
 					}
-					else if([i][j]==[0][0]==true){
+					else if([i][j]==[0][0]){
 						chooseThis = availableMoves[0][0];
 					}
-					else if([i][j]==[7][7]==true){
+					else if([i][j]==[7][7]){
 						chooseThis = availableMoves[7][7];
 					}
-					else if([i][j]==[7][0]==true){
+					else if([i][j]==[7][0]){
 						chooseThis = availableMoves[7][0];
 					}
 					
 					//if a the area around corners is avaible, skip it
 					
-					else if([i][j]==[0][6]==true){
+					else if([i][j]==[0][6]){
 						return;
 					}
-					else if([i][j]==[0][1]==true){
+					else if([i][j]==[0][1]){
 						return;
 					}
-					else if([i][j]==[1][0]==true){
+					else if([i][j]==[1][0]){
 						return;
 					}
-					else if([i][j]==[1][1]==true){
+					else if([i][j]==[1][1]){
 						return;
 					}
-					else if([i][j]==[1][6]==true){
+					else if([i][j]==[1][6]){
 						return;
 					}
-					else if([i][j]==[1][7]==true){
+					else if([i][j]==[1][7]){
 						return;
 					}
-					else if([i][j]==[6][0]==true){
+					else if([i][j]==[6][0]){
 						return;
 					}
-					else if([i][j]==[6][1]==true){
+					else if([i][j]==[6][1]){
 						return;
 					}
-					else if([i][j]==[7][1]==true){
+					else if([i][j]==[7][1]){
 						return;
 					}
-					else if([i][j]==[6][7]==true){
+					else if([i][j]==[6][7]){
 						return;
 					}
-					else if([i][j]==[6][6]==true){
+					else if([i][j]==[6][6]){
 						return;
 					}
-					else if([i][j]==[7][6]==true){
+					else if([i][j]==[7][6]){
 						return;
 					}
-					//now you pick the spot that will open up the most moves 
-					//for you not allow the oppent to gain a corner
+					
+					//if you can complete a row, pick that
+					//if the avaiblae spot is in between two opponents, choose it, they cant change you
 					
 					/*
 
-					** Mobility Method **
+					** Mobility Method **   DO EASIER WAY INSTEAD?
 					
 					for(int i = 0; i<list of possible moves;i++)
 						{
