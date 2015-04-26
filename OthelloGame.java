@@ -192,6 +192,23 @@ public class OthelloGame {
 					//now you pick the spot that will open up the most moves 
 					//for you not allow the oppent to gain a corner
 					
+					/*
+
+					** Mobility Method **
+					
+					for(int i = 0; i<list of possible moves;i++)
+						{
+
+							insert to priority heap: available moves created
+							after choosing a particular square
+
+						}
+					return top choice
+				
+				
+				} 
+				 **/
+					
 				}
 				else
 				{
@@ -203,22 +220,5 @@ public class OthelloGame {
 		
 		return chooseThis;
 	}
-	
-	/*
-
-		** Mobility Method **
-		
-		for(int i = 0; i<list of possible moves;i++)
-			{
-
-				insert to priority heap: available moves created
-				after choosing a particular square
-
-			}
-		return top choice
-	
-	
-	} 
-	 **/
 	
 }
