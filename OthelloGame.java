@@ -1,12 +1,13 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Created by Brandon on 4/21/15.
- * <p/>
+ *
  * The game class! Manages each in-game part of the project
- * <p/>
+ *
  * STAYS TOTALLY SEPARATE FROM THE GAMEWINDOW CLASS / ALL GUI ELEMENTS PLS
- * <p/>
+ *
  * But yeah, logic stuff goes here. Each method should be explained well enough, right?
  */
 
@@ -14,7 +15,7 @@ public class OthelloGame {
 
 	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
-	String current = "blue";
+	String current = "red";
 
 	public OthelloGame(Tile[][] buttons) {
 
@@ -102,12 +103,14 @@ public class OthelloGame {
 							// if T has been clicked and has a color
 							if (tile.getToggled())
 								// If the current placing color is the same as S's color
-								if (current.equals(tile.getColor()))
+								if (current.equals(tile.getColor())) {
 									// If they're in the same line and > 1 distance apart
-									if (inSameLine(boardState[i][j], tile))
-										// TODO: (Test here to see if every piece between the two is filled & not all same)
-										// Return true for now!
-										returner[i][j] = true;
+									double slope = inSameLine(boardState[i][j], tile);
+									if (slope != 0.1)
+										// Test here to see if every piece between the two is filled & not all same)
+										if (tilesAreFilled(boardState[i][j], tile, slope))
+											returner[i][j] = true;
+								}
 
 		return returner;
 	}
@@ -115,7 +118,7 @@ public class OthelloGame {
 	// Checks to see if 2 tiles are in the same vertical, horizontal, or (perfect) diagonal line
 	// Also checks to see if they're more than 1 tile apart
 	// If both are true, then returns true!
-	public boolean inSameLine(Tile tile1, Tile tile2) {
+	public double inSameLine(Tile tile1, Tile tile2) {
 
 		int x1 = tile1.getx();
 		int y1 = tile1.gety();
@@ -124,7 +127,81 @@ public class OthelloGame {
 
 		double slope = Math.abs((y2 - y1) / (double) (x2 - x1));
 
-		return (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == 1)) && ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)));
+		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == 1) || (slope == -1))
+				&& ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)))
+			return slope;
+
+		else return 0.1;
+
+	}
+
+	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
+
+		LinkedList<Tile> returner = new LinkedList<Tile>();
+		int x1 = tile1.getx();
+		int y1 = tile1.gety();
+		int x2 = tile2.getx();
+		int y2 = tile2.gety();
+
+		if (slope == 0) {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+			assert (y1 == y2);
+
+			for (int i = start.getx() + 1; i < end.getx(); i++)
+				returner.add(boardState[y1][i]);
+
+
+
+		} else if (slope == Double.POSITIVE_INFINITY) {
+
+			Tile start = (y1 < y2) ? tile1 : tile2;
+			Tile end = (y1 < y2) ? tile2 : tile1;
+			assert (x1 == x2);
+
+			for (int i = start.gety() + 1; i < end.gety(); i++)
+				returner.add(boardState[i][x1]);
+
+
+
+		// Can have a smaller x OR a smaller y
+		} else if (slope == 1) {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+
+			for (int i = 1; i < (end.getx() - start.getx()); i++)
+				returner.add(boardState[start.gety() + i][start.getx() + i]);
+
+
+		} else {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+
+			for (int i = 1; i < (end.getx() - start.getx()); i++)
+				returner.add(boardState[start.gety() - i][start.getx() + i]);
+
+		}
+
+		return returner;
+
+	}
+
+	public boolean tilesAreFilled(Tile tile1, Tile tile2, double slope) {
+
+		LinkedList<Tile> between = getBetweenTiles(tile1, tile2, slope);
+		boolean notAllTheSame = false;
+
+		for (Tile current : between) {
+
+			if (current.getColor() == null) return false;
+			if (!current.getColor().equals(tile2.getColor())) notAllTheSame = true;
+
+		}
+
+		return notAllTheSame;
 
 	}
 }
