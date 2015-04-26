@@ -1,0 +1,157 @@
+
+-----------------
+Current AI Theory
+-----------------
+
+Basic Goals: 
+	- Get the Corners
+	- Complete whole Rows
+	- Make moves that result in the most next moves 
+	  to provide more squares you can move to
+	- Moving in between two white circles means that the
+	  opponent can't capture you and thus you are safe
+	- Playing the game from the middle outwards
+
+
+Plan: A program that calculates the most strategic moves using set parameters
+of a particular strategy of every single available move. This will then be
+set to a cost that decides which of the moves to use. This will be 
+calculated using the total available squares, thus changing every turn
+
+Strategy website: http://www.samsoft.org.uk/reversi/strategy.htm
+
+
+Strategy 1: Location Priorities
+
+The theory we are thinking of implementing is to use weighted squares 
+to put priority over certain locations
+
+
+	----------------------------------------
+	|  1 |  10 |  2  |   |   | 2 | 10 | 1  |
+	----------------------------------------
+	| 10 |  9  |     |   |   |   |  9 | 10 |
+	----------------------------------------
+	| 2  |	   |     |   |   |   |    |  2 |
+	----------------------------------------
+	|    |     |     |   |   |   |    |    |
+	----------------------------------------
+	|    |     |     |   |   |   |    |    |
+	----------------------------------------
+	|  2 |     |     |   |   |   |    | 2  |
+	----------------------------------------
+	| 10 | 9   |     |   |   |   |  9 | 10 |
+	----------------------------------------
+	|  1  | 10 | 2   |   |   | 2 | 10 | 1  |
+	----------------------------------------
+
+Strategy 2: Pattern Recognition
+
+This is idea is based off the idea of chess. In chess, many of the times,
+the players have played to game so often that they begin to recognise
+patterns in the game and learn what is the best moves to do in that
+situation. 
+
+Strategy 3: Maximum Disks Strategy
+
+This method 'forces' the opponent to get as many of its disks on the board
+as possible and then taking the vital positions in the last leg of the 
+game to win the game.
+
+	example
+
+	--------------------------------------
+	|   |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------		
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------		white has no more
+	| W |  W |  W  |  B |  W | W | W | W |		valid moves
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	|   |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------
+
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------		
+	| W |  B |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  B  |  W |  W | W | W | W |
+	--------------------------------------		
+	| W |  W |  W  |  B |  W | W | W | W |		Black makes winning moves
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| W |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	|   |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------
+
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------		
+	| B |  B |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| B |  W |  B  |  W |  W | W | W | W |
+	--------------------------------------		
+	| B |  W |  W  |  B |  W | W | W | W |		
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------
+
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W |   |
+	--------------------------------------		
+	| B |  B |  W  |  W |  W | W | W | W |
+	--------------------------------------
+	| B |  W |  B  |  W |  W | W | W | W |
+	--------------------------------------		
+	| B |  W |  W  |  B |  W | W | W | W |		
+	--------------------------------------
+	| B |  W |  W  |  W |  B | W | W | W |
+	--------------------------------------
+	| B |  W |  W  |  W |  W | B | W | W |
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | B | W |
+	--------------------------------------
+	| B |  B |  B  |  B |  B | B | B | B |
+	--------------------------------------
+
+	--------------------------------------
+	| B |  W |  W  |  W |  W | W | W | B |
+	--------------------------------------		
+	| B |  B |  W  |  W |  W | W | B | W |
+	--------------------------------------
+	| B |  W |  B  |  W |  W | B | W | W |		Black wins 40-24
+	--------------------------------------		
+	| B |  W |  W  |  B |  B | W | W | W |		
+	--------------------------------------
+	| B |  W |  W  |  B |  B | W | W | W |
+	--------------------------------------
+	| B |  W |  B  |  W |  W | B | W | W |
+	--------------------------------------
+	| B |  B |  W  |  W |  W | W | B | W |
+	--------------------------------------
+	| B |  B |  B  |  B |  B | B | B | B |
+	--------------------------------------	
+
+Strategy 4: Mobility
+
+In this strategy you are trying to create the most possiblity of moves
+for yourself and limiting the moves of the opponent's movements. 
+
