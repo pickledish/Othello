@@ -204,4 +204,98 @@ public class OthelloGame {
 		return notAllTheSame;
 
 	}
+	
+	public int[][] bestMove(boolean[][] availableMoves)
+	{
+		int[][] chooseThis = 0;
+		for(int i=0;i<availableMoves.length;i++)
+		{
+			for(int j=0;j<availableMoves.length;i++)
+			{
+				if(availableMoves[i][j]==true)
+				{
+					//if corner move is avaiblae, automatically choose corner
+					if([i][j]==[0][7]==true){
+						chooseThis = availableMoves[0][7];
+					}
+					else if([i][j]==[0][0]==true){
+						chooseThis = availableMoves[0][0];
+					}
+					else if([i][j]==[7][7]==true){
+						chooseThis = availableMoves[7][7];
+					}
+					else if([i][j]==[7][0]==true){
+						chooseThis = availableMoves[7][0];
+					}
+					
+					//if a the area around corners is avaible, skip it
+					
+					else if([i][j]==[0][6]==true){
+						return;
+					}
+					else if([i][j]==[0][1]==true){
+						return;
+					}
+					else if([i][j]==[1][0]==true){
+						return;
+					}
+					else if([i][j]==[1][1]==true){
+						return;
+					}
+					else if([i][j]==[1][6]==true){
+						return;
+					}
+					else if([i][j]==[1][7]==true){
+						return;
+					}
+					else if([i][j]==[6][0]==true){
+						return;
+					}
+					else if([i][j]==[6][1]==true){
+						return;
+					}
+					else if([i][j]==[7][1]==true){
+						return;
+					}
+					else if([i][j]==[6][7]==true){
+						return;
+					}
+					else if([i][j]==[6][6]==true){
+						return;
+					}
+					else if([i][j]==[7][6]==true){
+						return;
+					}
+					//now you pick the spot that will open up the most moves 
+					//for you not allow the oppent to gain a corner
+					
+					/*
+
+					** Mobility Method **
+					
+					for(int i = 0; i<list of possible moves;i++)
+						{
+
+							insert to priority heap: available moves created
+							after choosing a particular square
+
+						}
+					return top choice
+				
+				
+				} 
+				 **/
+					
+				}
+				else
+				{
+					return; 
+					// if the move is not available skip over it
+				}
+			}
+		}
+		
+		return chooseThis;
+	}
+	
 }
