@@ -10,6 +10,47 @@ Side goal is to learn how the hell Github works, is good fun
 
 Current Goals!
 
-Brandon: Get the getViableMoves() function actually working
-Jeff: Get the thing to "capture" tiles caught between colors after a move is made
-Som: Some sort of AI thing, you've got the algorithm for now? Godspeed
+Compatibility for Game
+Time Limits
+
+************************************************** PROJECT WRITE UP ************************************************************
+
+Mellow Othello Portobellos
+Names: Jeff Hrebenach, Brandon Willett, (Som) Euakarn Liengtiraphan
+
+|||Justification of your design decisions, including your choice of programming language
+
+The main strategy we used for this program is the Regional Priority strategy. 
+
++1000 |  -10 |  +10 |  +10 |  +10 |  +10 |  -10 |  +1000
+--------------------------------------------------------
+-10   |  -15 |  -15 |  -15 |  -15 |  -15 |  -15 |  -10
+--------------------------------------------------------
++10   |  -15 |   +2 |    0 |   +1 |   +2 |  -15 |  +10
+--------------------------------------------------------
++10   |  -15 |   0  |      |      |   +1 |  -15 |  +10
+--------------------------------------------------------
++10   |  -15 |   +1 |      |      |    0 |  -15 |  +10
+--------------------------------------------------------
++10   |  -15 |   +2 |   +1 |   0  |   +2 |  -15 |  +10
+--------------------------------------------------------
+-10   |  -15 |  -15 |  -15 | -15  | -15  | -15  | -10
+--------------------------------------------------------
++1000 |  -10 |  +10 |  +10 | +10  | +10  | -10  | +1000
+
+ 
+We choose to use Java because it is the language that all of us are most comfortable with. 
+The flexibility of the language also helped us to program the complicated methods needed 
+for this game with much more ease. 
+
+|||Any special features of your program 
+
+
+
+|||How you tested your program
+
+
+ 
+|||Citations to any resources you used in developing your program, such as articles about Othello strategy. 
+
+
