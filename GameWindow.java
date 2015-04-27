@@ -128,6 +128,16 @@ public class GameWindow {
 			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
 		}
+		if (game.getTiles("red") == 0) {
+			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			System.out.println("Blue Wins");
+			System.exit(0);
+		}
+		if (game.getTiles("blue") == 0) {
+			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			System.out.println("Red Wins");
+			System.exit(0);
+		}
 
 		window.pack();
 
