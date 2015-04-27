@@ -619,11 +619,4 @@ public class OthelloGame {
 			}
 		return (bestX + " " + bestY);
 	}
-	
-<<<<<<< HEAD
 }
-
-
-=======
-}
->>>>>>> origin/master
