@@ -20,18 +20,16 @@ public class OthelloGame {
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current;
-	boolean ai;
 
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
-	// The constructor! Sets up the global variables and states for this game
-	public OthelloGame(Tile[][] buttons, String c, boolean ai) {
+	// The constructor! Does nothing, really
+	public OthelloGame(Tile[][] buttons, String c) {
 
 		boardState = buttons;
 		current = c;
-		this.ai = ai;
 
 	}
 
@@ -74,7 +72,9 @@ public class OthelloGame {
 				JOptionPane.showMessageDialog(null, "No Moves available! " + current + " skips turn!",
 						"No moves!", JOptionPane.PLAIN_MESSAGE);
 				current = current.equals("blue") ? "red" : "blue";
+
 			}
+			System.out.println(compMove());
 		}
 	}
 
@@ -165,9 +165,8 @@ public class OthelloGame {
 									if ((slope = inSameLine(boardState[i][j], tile)) != 0.1)
 										// Test here to see if every piece between the two is filled & not all same
 										if (tilesAreFilled(boardState[i][j], tile, slope))
-											// Test to see if it's toggled yet
-											if (!boardState[i][j].getToggled())
 											// If so, it's an actual choice!
+											if (!boardState[i][j].getToggled())
 												returner[i][j] = true;
 
 		return returner;
@@ -292,7 +291,9 @@ public class OthelloGame {
 	public int rowColorChanger(Tile pressed, boolean change) {
 		int count = 0;
 		String currColor = current;
-		String otherColor = (current.equals("red")) ? "blue" : "red";
+		String otherColor = "red";
+		if (current == "red")
+			otherColor = "blue";
 
 		int myX = pressed.getx();
 		int myY = pressed.gety();
@@ -483,7 +484,7 @@ public class OthelloGame {
 			for(int j=0;j<availableMoves.length;i++)
 			{
 				
-				if(availableMoves[i][j])
+				if(availableMoves[i][j]==true)
 				{
 					
 					//make a possible prospective move
@@ -502,6 +503,7 @@ public class OthelloGame {
 				}
 		
 		}
+		return;
 	}
 	
 	public Tile bestMove()
@@ -583,24 +585,41 @@ public class OthelloGame {
 	public String compMove() {
 		int bestX = -1;
 		int bestY = -1;
-		int bestScore = -1;
+		int bestScore = -10000;
+		int currScore = 0;
 
-		int redScore = getTiles("red");
-		int blueScore = getTiles("blue");
 		boolean[][] available = getViableMoves();
+
 		for (int x = 0; x < 8; x++)
 			for (int y = 0; y < 8; y++) {
 				if (available[x][y]) {
-					if (rowColorChanger(boardState[x][y], false) > bestScore) {
+					currScore = rowColorChanger(boardState[x][y], false);
+					if (x == 0 || y == 0 || x == 7 || y == 7)
+						currScore += 10;
+					if (((x == 0 && y == 0) || (x == 0 && y == 7)) || ((x == 7 && y == 0) || (x == 7 && y == 7)))
+						currScore += 1000;
+					if (x == 1 || y == 1 || x == 6 || y == 6)
+						currScore -= 5;
+					if (((x == 1 && y == 1) || (x == 1 && y == 6)) || ((x == 6 && y == 1) || (x == 6 && y == 6)))
+						currScore -=10;
+					if ((((x == 0 && y == 1) || (x == 0 && y == 6)) || ((x == 1 && y == 0) || (x == 6 && y == 0))) 
+							|| (((x == 6 && y == 7) || (x == 7 && y == 6)) || ((x == 1 && y == 7) || (x == 7 && y == 1))))
+						currScore-=15;
+					if (((x == 2 && y == 2) || (x == 2 && y == 5)) || ((x == 5 && y == 2) || (x == 5 && y == 5)))
+						currScore += 5;
+					if (currScore > bestScore) {
 						bestScore = rowColorChanger(boardState[x][y], false);
-						bestX = x;
-						bestY = y;
+						bestX = y;
+						bestY = 7-x;
+						
 					}
 					
 					
 				}
 			}
-		return "bestX " + "bestY";
+		return (bestX + " " + bestY);
 	}
 	
+}
+
 }
