@@ -22,7 +22,8 @@ public class OthelloGame {
 	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
 	String current = "red";
-	TreeSet<Tile> possibleMove=null;
+	TreeMap<Tile, Integer> possibleMove=null;
+	boolean[][] availableMoves;
 
 	public OthelloGame(Tile[][] buttons) {
 
@@ -411,7 +412,7 @@ public class OthelloGame {
 		availableMoves = getViableMoves(); //finds all possible moves
 		
 		//tree to hold possible outcome that can occur after you make a move
-		possibleMove = new <Tile, Integer>TreeMap();
+		possibleMove = new TreeMap<Tile, Integer>();
 		
 		for(int i=0;i<availableMoves.length;i++) //iterate through all squares on the board
 		{
@@ -423,7 +424,7 @@ public class OthelloGame {
 					
 					//make a possible prospective move
 						rowColorChanger(boardState[i][j]);
-						possibleMove.put(boardState[i][j],0);
+						possibleMove.put(boardState[i][j], 0);
 						
 					//simulate the opponent's possible counter move
 						boolean[][] temp = getViableMoves();
