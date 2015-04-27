@@ -36,6 +36,11 @@ public class GameButton extends JButton implements Tile {
 			if (col.equals("red")) this.setBackground(Color.red);
 
 			color = col;
+		} else if (col == null) {
+			this.setOpaque(false);
+			this.setBorderPainted(true);
+			this.setBackground(new JButton().getBackground());
+			color = null;
 		}
 
 	}

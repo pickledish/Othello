@@ -13,7 +13,10 @@ import java.awt.event.*;
 
 public class GameWindow {
 
+	JFrame window = new JFrame("Othello");
 	GameButton[][] buttons;
+	JLabel redCount;
+	JLabel blueCount;
 	OthelloGame game;
 
 	public GameWindow() {}
@@ -21,9 +24,11 @@ public class GameWindow {
 	// Makes the window, using GridBagLayout cause best layout
 	public void drawWindow() {
 
-		JFrame window = new JFrame("Othello");
 		window.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
+
+		JPanel board = new JPanel();
+		board.setLayout(new GridBagLayout());
 
 		buttons = new GameButton[8][8];
 
@@ -46,7 +51,7 @@ public class GameWindow {
 				c.gridy = i;
 				c.gridx = j;
 				c.insets = new Insets(5, 5, 5, 5);
-				window.add(buttons[i][j], c);
+				board.add(buttons[i][j], c);
 			}
 		}
 
@@ -61,7 +66,40 @@ public class GameWindow {
 			}
 		}
 
-		window.setBackground(Color.gray);
+
+		JPanel options = new JPanel();
+		options.setLayout(new GridBagLayout());
+
+		redCount = new JLabel("Red Tiles: 2\t\t");
+		redCount.setFont(new Font("Serif", Font.PLAIN, 18));
+		blueCount = new JLabel("Blue Tiles: 2\t\t");
+		blueCount.setFont(new Font("Serif", Font.PLAIN, 18));
+
+		JButton reset = new JButton("Reset Game");
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				game.setUp();
+				refreshBoard();
+				redCount.setText("Red Tiles: 2\t\t\t");
+				blueCount.setText("Blue Tiles: 2\t\t\t");
+			}
+		});
+
+		c.gridx = 0;
+		options.add(redCount, c);
+		c.gridx++;
+		options.add(blueCount, c);
+		c.gridx++;
+		options.add(reset, c);
+
+
+		c.gridy = 0;
+		window.add(board, c);
+		c.gridy++;
+		window.add(options, c);
+
+		window.setBackground(Color.LIGHT_GRAY);
 		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.pack();
 		window.setVisible(true);
@@ -82,10 +120,15 @@ public class GameWindow {
 			}
 		}
 
-		if (toggled == 64){
+		if (toggled == 63) {
 			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
 		}
+
+		redCount.setText("Red Tiles: " + game.getTiles("red") + "\t\t\t");
+		blueCount.setText("Blue Tiles: " + game.getTiles("blue") + "\t\t\t");
+
+		window.pack();
 
 	}
 }

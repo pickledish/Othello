@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class OthelloGame {
 
 	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
-	String current = "red";
+	String current = "blue";
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
@@ -34,6 +35,13 @@ public class OthelloGame {
 	// Sets the middle 4 tiles to their starting colors, and toggles each to disabled
 	public void setUp() {
 
+		for (Tile[] row : boardState) {
+			for (Tile spot : row) {
+				if (spot.getToggled()) spot.toggle();
+				spot.setColor(null);
+			}
+		}
+
 		boardState[3][3].toggle();
 		boardState[3][3].setColor("red");
 		boardState[3][4].toggle();
@@ -44,6 +52,53 @@ public class OthelloGame {
 		boardState[4][3].setColor("blue");
 
 	}
+
+	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
+	public void tileClicked(Tile pressed) {
+
+		if (!pressed.getToggled()) {
+			rowColorChanger(pressed);
+			pressed.toggle();
+			pressed.setColor(current);
+
+			current = current.equals("blue") ? "red" : "blue";
+
+			if (noMoves(getViableMoves())) {
+
+				JOptionPane.showMessageDialog(null, "No Moves available! " + current + "skips turn!",
+						"No moves!", JOptionPane.PLAIN_MESSAGE);
+				current = current.equals("blue") ? "red" : "blue";
+
+			}
+		}
+	}
+
+	public boolean noMoves(boolean[][] available) {
+
+		for (boolean[] row : available)
+			for (boolean spot : row)
+				if (spot) return false;
+
+		return true;
+	}
+
+	public int getTiles(String col) {
+
+		int red = 0;
+		int blue = 0;
+
+		for (Tile[] row : boardState) {
+			for (Tile spot : row) {
+				if (spot.getColor() != null) {
+					if (spot.getColor().equals(("red"))) red++;
+					else blue++;
+				}
+			}
+		}
+
+		return (col.equals("red")) ? red : blue;
+	}
+
 
 	// Returns an array of booleans, each one corresponding to a button on the board
 	// If the boolean for the location is true, then it's a viable move! If false, leave it disabled
@@ -82,18 +137,6 @@ public class OthelloGame {
 
 		return getActualViableMoves(returner);
 		//return returner;
-	}
-
-	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
-	public void tileClicked(Tile pressed) {
-
-		if (!pressed.getToggled()) {
-			rowColorChanger(pressed);
-			pressed.toggle();
-			pressed.setColor(current);
-
-			current = current.equals("blue") ? "red" : "blue";
-		}
 	}
 
 	// Jesus christ here we go
