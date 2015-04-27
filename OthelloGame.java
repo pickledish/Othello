@@ -165,8 +165,10 @@ public class OthelloGame {
 									if ((slope = inSameLine(boardState[i][j], tile)) != 0.1)
 										// Test here to see if every piece between the two is filled & not all same
 										if (tilesAreFilled(boardState[i][j], tile, slope))
+											// Test to see if it's toggled yet
+											if (!boardState[i][j].getToggled())
 											// If so, it's an actual choice!
-											returner[i][j] = true;
+												returner[i][j] = true;
 
 		return returner;
 	}
@@ -483,7 +485,7 @@ public class OthelloGame {
 			for(int j=0;j<availableMoves.length;i++)
 			{
 				
-				if(availableMoves[i][j]==true)
+				if(availableMoves[i][j])
 				{
 					
 					//make a possible prospective move
@@ -502,7 +504,6 @@ public class OthelloGame {
 				}
 		
 		}
-		return;
 	}
 	
 	public Tile bestMove()
