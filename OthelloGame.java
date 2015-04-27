@@ -622,4 +622,4 @@ public class OthelloGame {
 	
 }
 
-}
+
