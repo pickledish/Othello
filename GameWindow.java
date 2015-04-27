@@ -20,8 +20,12 @@ public class GameWindow {
 	JLabel blueCount;
 	JLabel current;
 	OthelloGame game;
+	boolean goFirst = false;
 
-	public GameWindow() {}
+	public GameWindow(String player) {
+		if (player == "one")
+			goFirst = true;
+	}
 
 	// Makes the window, using GridBagLayout, and adds all tiles and labels to it
 	public void drawWindow() {
