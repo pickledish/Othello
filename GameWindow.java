@@ -10,6 +10,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Scanner;
 
 public class GameWindow {
 
@@ -56,8 +57,10 @@ public class GameWindow {
 			}
 		}
 
-		int ai = JOptionPane.showConfirmDialog(null, "Do you want an AI to play the othe side?",
-				"Artificial Intelligence Option", JOptionPane.YES_NO_OPTION);
+		// int ai = JOptionPane.showConfirmDialog(null, "Do you want an AI to play the other side?",
+		//		"Artificial Intelligence Option", JOptionPane.YES_NO_OPTION);
+
+		int ai = -3;
 
 		game = (ai == JOptionPane.YES_OPTION) ?
 				new OthelloGame(buttons, "blue", true) : new OthelloGame(buttons, "blue", false);
@@ -82,6 +85,7 @@ public class GameWindow {
 		blueCount.setFont(new Font("Serif", Font.PLAIN, 18));
 
 		JButton reset = new JButton("Reset Game");
+		reset.setFont(new Font("Serif", Font.PLAIN, 14));
 		reset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
@@ -115,6 +119,8 @@ public class GameWindow {
 		window.pack();
 		window.setVisible(true);
 
+		refreshBoard();
+
 	}
 
 	// For use after a button is pressed! Updates the board to represent all newly enabled/disabled buttons
@@ -143,15 +149,20 @@ public class GameWindow {
 			System.exit(0);
 		}
 		if (game.getTiles("red") == 0) {
-			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Game is over, Blue wins!", "Done", JOptionPane.PLAIN_MESSAGE);
 			System.out.println("Blue Wins");
 			System.exit(0);
 		}
 		if (game.getTiles("blue") == 0) {
-			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Game is over, Red wins!", "Done", JOptionPane.PLAIN_MESSAGE);
 			System.out.println("Red Wins");
 			System.exit(0);
 		}
+
+		System.out.print("Press a button or enter move: ");
+
+		Scanner input = new Scanner(System.in);
+		String s = input.nextLine();
 
 		window.pack();
 
