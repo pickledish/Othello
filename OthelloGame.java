@@ -61,7 +61,7 @@ public class OthelloGame {
 		if (!pressed.getToggled()) {
 
 			// Changes every color in the row to match the current color #Jeff
-			rowColorChanger(pressed);
+			rowColorChanger(pressed, true);
 			pressed.toggle();
 			pressed.setColor(current);
 
@@ -286,7 +286,8 @@ public class OthelloGame {
 	}
 
 	//For making colors change appropriately in all directions
-	public void rowColorChanger(Tile pressed) {
+	public int rowColorChanger(Tile pressed, boolean change) {
+		int count = 0;
 		String currColor = current;
 		String otherColor = "red";
 		if (current == "red")
@@ -306,7 +307,9 @@ public class OthelloGame {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currY--;
 				while (currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currY--;
 				}
 			}
@@ -323,7 +326,9 @@ public class OthelloGame {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currX--;
 				while (currX != myX) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX--;
 				}
 			}
@@ -340,7 +345,9 @@ public class OthelloGame {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currY++;
 				while (currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currY++;
 				}
 			}
@@ -357,7 +364,9 @@ public class OthelloGame {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currX++;
 				while (currX != myX) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX++;
 				}
 			}
@@ -378,7 +387,9 @@ public class OthelloGame {
 				currX++;
 				currY++;
 				while (currX != myX && currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX++;
 					currY++;
 				}
@@ -399,7 +410,9 @@ public class OthelloGame {
 				currX++;
 				currY--;
 				while (currX != myX && currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX++;
 					currY--;
 				}
@@ -420,7 +433,9 @@ public class OthelloGame {
 				currX--;
 				currY++;
 				while (currX != myX && currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX--;
 					currY++;
 				}
@@ -441,7 +456,9 @@ public class OthelloGame {
 				currX--;
 				currY--;
 				while (currX != myX && currY != myY) {
-					boardState[currY][currX].setColor(currColor);
+					if (change)
+						boardState[currY][currX].setColor(currColor);
+					count++;
 					currX--;
 					currY--;
 				}
@@ -449,7 +466,7 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-
+		return count;
 	}
 
 	public void possibleMove()
@@ -469,7 +486,7 @@ public class OthelloGame {
 				{
 					
 					//make a possible prospective move
-						rowColorChanger(boardState[i][j]);
+						rowColorChanger(boardState[i][j], true);
 						possibleMove.put(boardState[i][j], 0);
 						
 					//simulate the opponent's possible counter move
@@ -560,6 +577,30 @@ public class OthelloGame {
 		return best;
 		//returns the tile with the highest score, and thus this is the square that will be chosen for next move
 		
+	}
+	
+	//returns best move for computer
+	public String compMove() {
+		int bestX = -1;
+		int bestY = -1;
+		int bestScore = -1;
+
+		int redScore = getTiles("red");
+		int blueScore = getTiles("blue");
+		boolean[][] available = getViableMoves();
+		for (int x = 0; x < 8; x++)
+			for (int y = 0; y < 8; y++) {
+				if (available[x][y]) {
+					if (rowColorChanger(boardState[x][y], false) > bestScore) {
+						bestScore = rowColorChanger(boardState[x][y], false);
+						bestX = x;
+						bestY = y;
+					}
+					
+					
+				}
+			}
+		return "bestX " + "bestY";
 	}
 	
 }
