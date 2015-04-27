@@ -22,8 +22,8 @@ public class GameWindow {
 	OthelloGame game;
 	boolean goFirst = false;
 
-	public GameWindow(String player) {
-		if (player == "one")
+	public GameWindow(Boolean first) {
+		if (first)
 			goFirst = true;
 	}
 
@@ -67,7 +67,7 @@ public class GameWindow {
 		int ai = -3;
 
 		game = (ai == JOptionPane.YES_OPTION) ?
-				new OthelloGame(buttons, "blue", true) : new OthelloGame(buttons, "blue", false);
+				new OthelloGame(buttons, "blue", true, goFirst) : new OthelloGame(buttons, "blue", false, goFirst);
 
 		game.setUp();
 

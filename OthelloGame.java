@@ -20,6 +20,7 @@ public class OthelloGame {
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current;
+	String myColor;
 	boolean ai;
 
 	// These are Som's things but I'm sure they're important!
@@ -27,11 +28,15 @@ public class OthelloGame {
 	boolean[][] availableMoves;
 
 	// The constructor! Sets up the global variables and states for this game
-	public OthelloGame(Tile[][] buttons, String c, boolean ai) {
+	public OthelloGame(Tile[][] buttons, String c, boolean ai, boolean first) {
 
 		boardState = buttons;
 		current = c;
 		this.ai = ai;
+		if (first)
+			myColor = "blue";
+		else
+			myColor = "red";
 
 	}
 
@@ -53,6 +58,8 @@ public class OthelloGame {
 		boardState[4][4].setColor("red");
 		boardState[4][3].toggle();
 		boardState[4][3].setColor("blue");
+
+		if (current == myColor) System.out.println(compMove());
 
 	}
 
@@ -76,7 +83,8 @@ public class OthelloGame {
 				current = current.equals("blue") ? "red" : "blue";
 
 			}
-			System.out.println(compMove());
+			if (current == myColor)
+				System.out.println(compMove());
 		}
 	}
 
@@ -481,29 +489,26 @@ public class OthelloGame {
 		
 		for(int i=0;i<availableMoves.length;i++) //iterate through all squares on the board
 		{
-			for(int j=0;j<availableMoves.length;i++)
-			{
-				
-				if(availableMoves[i][j]==true)
-				{
-					
+			for (int j = 0; j < availableMoves.length; i++) {
+
+				if (availableMoves[i][j] == true) {
+
 					//make a possible prospective move
-						rowColorChanger(boardState[i][j], true);
-						possibleMove.put(boardState[i][j], 0);
-						
+					rowColorChanger(boardState[i][j], true);
+					possibleMove.put(boardState[i][j], 0);
+
 					//simulate the opponent's possible counter move
-						boolean[][] temp = getViableMoves();
-						this.possibleMove(); //THIS IS RECURSIVE LETS HOPE IT DOESNT CRASH
-						
-					}
+					boolean[][] temp = getViableMoves();
+					this.possibleMove(); //THIS IS RECURSIVE LETS HOPE IT DOESNT CRASH
+
+				}
 				//after tree of simulated moves are made, second recursive function
 				//transverse tree backwards, calculating move with best score
-					
-					
-				}
-		
+
+
+			}
+
 		}
-		return;
 	}
 	
 	public Tile bestMove()

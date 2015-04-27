@@ -5,18 +5,19 @@
  *
  */
 
-public class testMain {
+public class play {
+
 
 	public static void main(String[] args) {
-		
-		String player = "two";
-		if (args[0] == "B")
-			player = "one";
+
+		boolean firstp = false;
+		if (args[0].equals("B"))
+			firstp = true;
 		String depthLimit = args[1];
 		String timeLimit1 = args[2];
 		String timeLimit2 = args[3];
 
-		GameWindow othello = new GameWindow(player);
+		GameWindow othello = new GameWindow(firstp);
 		othello.drawWindow();
 
 	}
