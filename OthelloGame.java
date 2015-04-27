@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
+
 
 /**
  * Created by Brandon on 4/21/15.
@@ -20,8 +22,9 @@ public class OthelloGame {
 	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
 	String current = "red";
-	TreeSet<Tile> possibleMove=null;
-
+	TreeMap<Tile, Integer> possibleMove=null;
+	boolean[][] availableMoves;
+ 
 	public OthelloGame(Tile[][] buttons) {
 
 		boardState = buttons;
@@ -399,10 +402,10 @@ public class OthelloGame {
 	public void possibleMove()
 	{
 		int[][] chooseThis = null; //this will be the move chosen
-		boolean[][] availableMoves = getViableMoves(); //finds all possible moves
+		availableMoves = getViableMoves(); //finds all possible moves
 		
 		//tree to hold possible outcome that can occur after you make a move
-		possibleMove = new TreeSet<Tile>();
+		possibleMove = new <Tile, Integer>TreeMap();
 		
 		for(int i=0;i<availableMoves.length;i++) //iterate through all squares on the board
 		{
@@ -414,82 +417,18 @@ public class OthelloGame {
 					
 					//make a possible prospective move
 						rowColorChanger(boardState[i][j]);
-						possibleMove.add(boardState[i][j]);
+						possibleMove.put(boardState[i][j],0);
 						
 					//simulate the opponent's possible counter move
 						boolean[][] temp = getViableMoves();
 						this.possibleMove(); //THIS IS RECURSIVE LETS HOPE IT DOESNT CRASH
 						
 					}
-					
-					//if you can complete a row, pick that
-					//if the avaiblae spot is in between two opponents, choose it, they cant change you
-					
 				//after tree of simulated moves are made, second recursive function
 				//transverse tree backwards, calculating move with best score
 					
 					
 				}
-			
-					// if the move is not available skip over it
-				
-				/**
-				 * //if corner move is avaiblae, automatically choose corner
-				if([i][j]==[0][7]){
-					chooseThis = availableMoves[0][7];
-				}
-				else if([i][j]==[0][0]){
-					chooseThis = availableMoves[0][0];
-				}
-				else if([i][j]==[7][7]){
-					chooseThis = availableMoves[7][7];
-				}
-				else if([i][j]==[7][0]){
-					chooseThis = availableMoves[7][0];
-				}
-				
-				//if a the area around corners is avaible, skip it
-				//would be a problem is these areas are the only ones left available
-				
-				else if([i][j]==[0][6]){
-					return;
-				}
-				else if([i][j]==[0][1]){
-					return;
-				}
-				else if([i][j]==[1][0]){
-					return;
-				}
-				else if([i][j]==[1][1]){
-					return;
-				}
-				else if([i][j]==[1][6]){
-					return;
-				}
-				else if([i][j]==[1][7]){
-					return;
-				}
-				else if([i][j]==[6][0]){
-					return;
-				}
-				else if([i][j]==[6][1]){
-					return;
-				}
-				else if([i][j]==[7][1]){
-					return;
-				}
-				else if([i][j]==[6][7]){
-					return;
-				}
-				else if([i][j]==[6][6]){
-					return;
-				}
-				else if([i][j]==[7][6]){
-					return;
-				
-			}
-	
-				**/
 		
 		}
 		return;
@@ -498,8 +437,75 @@ public class OthelloGame {
 	public Tile bestMove()
 	{
 		Tile best =null;
+		int bestScore = 0;
 		
-		return null;
+		//iterates through list of next moves to find one with best next location
+		
+		for(Map.Entry<Tile, Integer> entry: possibleMove.entrySet())
+		{
+			Tile key = entry.getKey();
+			Integer value = entry.getValue();
+			
+			//highest score given to corners
+			if(key==boardState[0][0]||key==boardState[availableMoves.length][availableMoves.length]||
+					key==boardState[availableMoves.length][0]||key==boardState[0][availableMoves.length])
+			{
+				value = 5;
+			}
+			
+			//lowest score given to around right around corners
+			else if(key==boardState[0][1]||key==boardState[availableMoves.length][availableMoves.length-1]||
+					key==boardState[availableMoves.length][1]||key==boardState[0][availableMoves.length-1]||
+					key==boardState[availableMoves.length-1][0]||key==boardState[availableMoves.length-1][1]||
+					key==boardState[1][1]||key==boardState[1][0]||key==boardState[1][availableMoves.length-1]||
+					key==boardState[1][availableMoves.length]||key==boardState[availableMoves.length-1][availableMoves.length-1]||
+					key==boardState[availableMoves.length-1][availableMoves.length])
+			{
+				value = 1;
+			}
+			
+			//Second highest score given to edges
+			else if(key==boardState[0][2]||key==boardState[0][3]||key==boardState[0][4]||key==boardState[0][5]||
+					key==boardState[2][0]||key==boardState[3][0]||key==boardState[4][0]||key==boardState[5][0]||
+					key==boardState[availableMoves.length][2]||key==boardState[availableMoves.length][3]||key==boardState[availableMoves.length][4]||
+					key==boardState[availableMoves.length][5]||key==boardState[2][availableMoves.length]||key==boardState[3][availableMoves.length]||
+					key==boardState[4][availableMoves.length]||key==boardState[5][availableMoves.length])
+			{
+				value = 4;
+			}
+			
+			//second lowest points to area right beyond area around corners
+			//lowest score given to around right around corners
+			else if(key==boardState[1][2]||key==boardState[1][3]||key==boardState[5][availableMoves.length-1]||
+					key==boardState[1][4]||key==boardState[1][5]||key==boardState[4][availableMoves.length-1]||
+					key==boardState[availableMoves.length-1][2]||key==boardState[availableMoves.length-1][3]||
+					key==boardState[availableMoves.length-1][4]||key==boardState[availableMoves.length-1][5]||key==boardState[2][1]||
+					key==boardState[3][1]||key==boardState[4][1]||key==boardState[5][1]||key==boardState[3][availableMoves.length-1])
+			{
+				value = 2;
+			}
+			else
+			{
+				value = 3; 
+			}
+			
+		}
+		
+		//iterates through whole tree to finds tile with the highest score
+		
+		Map.Entry<Tile, Integer> max = null;
+		
+		for(Map.Entry<Tile, Integer> entry: possibleMove.entrySet())
+		{
+			if(max==null||entry.getValue().compareTo(max.getValue())>0)
+			{
+				max=entry;
+				best=max.getKey();
+			}
+		}
+		
+		return best;
+		//returns the tile with the highest score, and thus this is the square that will be chosen for next move
 		
 	}
 	
