@@ -20,16 +20,18 @@ public class OthelloGame {
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current;
+r	boolean ai;
 
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
-	// The constructor! Does nothing, really
-	public OthelloGame(Tile[][] buttons, String c) {
+	// The constructor! Sets up the global variables and states for this game
+	public OthelloGame(Tile[][] buttons, String c, boolean ai) {
 
 		boardState = buttons;
 		current = c;
+		this.ai = ai;
 
 	}
 
@@ -165,8 +167,9 @@ public class OthelloGame {
 									if ((slope = inSameLine(boardState[i][j], tile)) != 0.1)
 										// Test here to see if every piece between the two is filled & not all same
 										if (tilesAreFilled(boardState[i][j], tile, slope))
-											// If so, it's an actual choice!
+											// Test to see if it's toggled yet, if it is, then it can't be a choice
 											if (!boardState[i][j].getToggled())
+												// If so, it's an actual choice!
 												returner[i][j] = true;
 
 		return returner;
@@ -291,9 +294,7 @@ public class OthelloGame {
 	public int rowColorChanger(Tile pressed, boolean change) {
 		int count = 0;
 		String currColor = current;
-		String otherColor = "red";
-		if (current == "red")
-			otherColor = "blue";
+		String otherColor = (current.equals("red")) ? "blue" : "red";
 
 		int myX = pressed.getx();
 		int myY = pressed.gety();
@@ -484,7 +485,7 @@ public class OthelloGame {
 			for(int j=0;j<availableMoves.length;i++)
 			{
 				
-				if(availableMoves[i][j]==true)
+				if(availableMoves[i][j])
 				{
 					
 					//make a possible prospective move
@@ -503,7 +504,6 @@ public class OthelloGame {
 				}
 		
 		}
-		return;
 	}
 	
 	public Tile bestMove()
