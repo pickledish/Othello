@@ -20,7 +20,7 @@ public class OthelloGame {
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current;
-r	boolean ai;
+	boolean ai;
 
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
@@ -620,6 +620,4 @@ r	boolean ai;
 		return (bestX + " " + bestY);
 	}
 	
-}
-
 }
