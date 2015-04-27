@@ -4,7 +4,7 @@ import java.util.TreeSet;
 
 /**
  * Created by Brandon on 4/21/15.
- *
+ *1
  * The game class! Manages each in-game part of the project
  *
  * STAYS TOTALLY SEPARATE FROM THE GAMEWINDOW CLASS / ALL GUI ELEMENTS PLS
@@ -80,7 +80,7 @@ public class OthelloGame {
 
 	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
 	public void tileClicked(Tile pressed) {
-		
+
 		rowColorChanger(pressed);
 
 		if (!pressed.getToggled()) {
@@ -129,33 +129,33 @@ public class OthelloGame {
 		int x2 = tile2.getx();
 		int y2 = tile2.gety();
 
-		double slope = Math.abs((y2 - y1) / (double) (x2 - x1));
+		double slope = (y2 - y1) / (double) (x2 - x1);
 
-		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == 1) || (slope == -1))
+		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY) || (slope == 1) || (slope == -1))
 				&& ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)))
 			return slope;
 
 		else return 0.1;
 
 	}
-	
+
 	//For making colors change appropriately in all directions
 	public void rowColorChanger(Tile pressed) {
 		String currColor = current;
 		String otherColor = "red";
 		if (current == "red")
 			otherColor = "blue";
-		
+
 		int myX = pressed.getx();
 		int myY = pressed.gety();
 		int currX = myX;
 		int currY = myY;
-		
+
 		currY++;
 		if (currY < 8)
 			while (boardState[currY][currX].getColor() == otherColor && currY < 7) {
 				currY++;
-		}
+			}
 		if (currY < 8) {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currY--;
@@ -167,12 +167,12 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currX++;
 		if (currX < 8)
 			while (boardState[currY][currX].getColor() == otherColor && currX < 7) {
 				currX++;
-		}
+			}
 		if (currX != 8) {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currX--;
@@ -184,12 +184,12 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currY--;
 		if (currY >= 0)
 			while (boardState[currY][currX].getColor() == otherColor && currY > 0) {
 				currY--;
-		}
+			}
 		if (currY != -1) {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currY++;
@@ -201,12 +201,12 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currX--;
 		if (currX >= 0)
 			while (boardState[currY][currX].getColor() == otherColor && currX > 0) {
 				currX--;
-		}
+			}
 		if (currX != -1) {
 			if (boardState[currY][currX].getColor() == currColor) {
 				currX++;
@@ -218,8 +218,8 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
-		
+
+
 		currX--;
 		currY--;
 		if (currX >= 0 && currY >=0)
@@ -240,7 +240,7 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currX--;
 		currY++;
 		if (currX >= 0 && currY < 8)
@@ -261,7 +261,7 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currX++;
 		currY--;
 		if (currX < 8 && currY > -1)
@@ -282,7 +282,7 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 		currX++;
 		currY++;
 		if (currX < 8 && currY < 8)
@@ -303,7 +303,7 @@ public class OthelloGame {
 		}
 		currY = myY;
 		currX = myX;
-		
+
 	}
 
 	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
@@ -320,31 +320,45 @@ public class OthelloGame {
 			Tile end = (x1 < x2) ? tile2 : tile1;
 			assert (y1 == y2);
 
-			for (int i = start.getx() + 1; i < end.getx(); i++)
-				returner.add(boardState[y1][i]);
+			for (int i = start.getx() + 1; i < end.getx(); i++) {
+
+				// If the current color and the first tile next to the possible viable tile are the same, no
+				if ((i == end.getx() - 1) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[y1][i]);
+
+			}
 
 
 
-		} else if (slope == Double.POSITIVE_INFINITY) {
+		} else if ((slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY)) {
 
 			Tile start = (y1 < y2) ? tile1 : tile2;
 			Tile end = (y1 < y2) ? tile2 : tile1;
 			assert (x1 == x2);
 
-			for (int i = start.gety() + 1; i < end.gety(); i++)
-				returner.add(boardState[i][x1]);
+			for (int i = start.gety() + 1; i < end.gety(); i++) {
 
+				if ((i == end.gety() - 1) && (boardState[i][x1].getColor() != null) &&(boardState[i][x1].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[i][x1]);
+			}
 
-
-		// Can have a smaller x OR a smaller y
+			// Can have a smaller x OR a smaller y
 		} else if (slope == 1) {
 
 			Tile start = (x1 < x2) ? tile1 : tile2;
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++)
-				returner.add(boardState[start.gety() + i][start.getx() + i]);
 
+				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() + i][start.getx() + i]);
 
 		} else {
 
@@ -352,8 +366,11 @@ public class OthelloGame {
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++)
-				returner.add(boardState[start.gety() - i][start.getx() + i]);
-
+				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() - i][start.getx() + i]);
 		}
 
 		return returner;
@@ -367,6 +384,7 @@ public class OthelloGame {
 
 		for (Tile current : between) {
 
+			if (current == null) return false;
 			if (current.getColor() == null) return false;
 			if (!current.getColor().equals(tile2.getColor())) notAllTheSame = true;
 
