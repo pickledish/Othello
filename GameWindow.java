@@ -120,13 +120,14 @@ public class GameWindow {
 			}
 		}
 
-		if (toggled == 63) {
-			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
-			System.exit(0);
-		}
 
 		redCount.setText("Red Tiles: " + game.getTiles("red") + "\t\t\t");
 		blueCount.setText("Blue Tiles: " + game.getTiles("blue") + "\t\t\t");
+
+		if (toggled == 64) {
+			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
+		}
 
 		window.pack();
 

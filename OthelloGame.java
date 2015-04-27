@@ -20,19 +20,22 @@ import java.util.TreeMap;
 
 public class OthelloGame {
 
-	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
+	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current = "blue";
+
+	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
+	// The constructor! Does nothing, really
 	public OthelloGame(Tile[][] buttons) {
 
 		boardState = buttons;
 
 	}
 
-	// Sets the middle 4 tiles to their starting colors, and toggles each to disabled
+	// Clears the board, then sets the middle 4 tiles to their starting colors, and toggles each to disabled
 	public void setUp() {
 
 		for (Tile[] row : boardState) {
@@ -53,18 +56,22 @@ public class OthelloGame {
 
 	}
 
-	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
+	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips current
 	public void tileClicked(Tile pressed) {
 
+		// Only runs if the button hasn't ever been pressed before
 		if (!pressed.getToggled()) {
+
+			// Changes every color in the row to match the current color #Jeff
 			rowColorChanger(pressed);
 			pressed.toggle();
 			pressed.setColor(current);
 
 			current = current.equals("blue") ? "red" : "blue";
 
+			// Tests to see if there are any available moves following the press. If not, the next player passes turn
+			// TODO: Might not work, hard to test
 			if (noMoves(getViableMoves())) {
-
 				JOptionPane.showMessageDialog(null, "No Moves available! " + current + "skips turn!",
 						"No moves!", JOptionPane.PLAIN_MESSAGE);
 				current = current.equals("blue") ? "red" : "blue";
@@ -73,15 +80,17 @@ public class OthelloGame {
 		}
 	}
 
+	// Returns true if, for a given available move array, all spots are not available moves
 	public boolean noMoves(boolean[][] available) {
 
-		for (boolean[] row : available)
-			for (boolean spot : row)
-				if (spot) return false;
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++)
+				if (available[i][j] && !boardState[i][j].getToggled() ) return false;
 
 		return true;
 	}
 
+	// Returns the total number of (col) colored tiles on the board at the current moment
 	public int getTiles(String col) {
 
 		int red = 0;
@@ -99,20 +108,18 @@ public class OthelloGame {
 		return (col.equals("red")) ? red : blue;
 	}
 
-
-	// Returns an array of booleans, each one corresponding to a button on the board
-	// If the boolean for the location is true, then it's a viable move! If false, leave it disabled
+	// Returns an array of booleans, each one corresponding to a button on the board (true = viable)
 	public boolean[][] getViableMoves() {
 
 		boolean[][] returner = new boolean[8][8];
 
+		// Adds each tile on the perimeter of the blob of in-place tiles to returner
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 
-
-				// Checks
 				boolean[][] truths = new boolean[3][3];
 
+				// Checks each of 8 tile surrounding boardstate[i][j] to see if it's part of the perimeter
 				for (int k = -1; k <= 1; k++) {
 					for (int l = -1; l <= 1; l++) {
 
@@ -121,7 +128,6 @@ public class OthelloGame {
 						} catch (ArrayIndexOutOfBoundsException e) {
 							truths[k + 1][l + 1] = false;
 						}
-
 					}
 				}
 
@@ -135,41 +141,39 @@ public class OthelloGame {
 			}
 		}
 
+		// This was only the first step (perimeter tiles). Keep going for actual viable moves
 		return getActualViableMoves(returner);
-		//return returner;
 	}
 
-	// Jesus christ here we go
+	// When given perimeter tiles, checks a million criteria to see if a tile is an actual possibility
 	public boolean[][] getActualViableMoves(boolean[][] firstStep) {
 
 		boolean[][] returner = new boolean[8][8];
+		double slope;
 
-		// For each tile S
+		// For each tile S in the boardState
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++)
-				// If it's a reasonable option for a move to be made
+				// If it's part of the perimeter of current colored tiles (as determined before)
 				if (firstStep[i][j])
-					// For each other tile T
+					// For each tile T in boardState (again)
 					for (Tile[] row : boardState)
 						for (Tile tile : row)
 							// if T has been clicked and has a color
 							if (tile.getToggled())
 								// If the current placing color is the same as S's color
-								if (current.equals(tile.getColor())) {
-									// If they're in the same line and > 1 distance apart
-									double slope = inSameLine(boardState[i][j], tile);
-									if (slope != 0.1)
-										// Test here to see if every piece between the two is filled & not all same)
+								if (current.equals(tile.getColor()))
+									// If they're in the same line and > 1 distance apart, get their slope
+									if ((slope = inSameLine(boardState[i][j], tile)) != 0.1)
+										// Test here to see if every piece between the two is filled & not all same
 										if (tilesAreFilled(boardState[i][j], tile, slope))
+											// If so, it's an actual choice!
 											returner[i][j] = true;
-								}
 
 		return returner;
 	}
 
-	// Checks to see if 2 tiles are in the same vertical, horizontal, or (perfect) diagonal line
-	// Also checks to see if they're more than 1 tile apart
-	// If both are true, then returns true!
+	// Returns whether 2 tiles are in the same vertical, horizontal, or (perfect, slope = 1) diagonal line
 	public double inSameLine(Tile tile1, Tile tile2) {
 
 		int x1 = tile1.getx();
@@ -179,11 +183,109 @@ public class OthelloGame {
 
 		double slope = (y2 - y1) / (double) (x2 - x1);
 
-		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY) || (slope == 1) || (slope == -1))
-				&& ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)))
+		// The ugly if statement, also checks to make sure the two points are > 1 square apart
+		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY) || (slope == 1)
+				|| (slope == -1)) && ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)))
 			return slope;
 
+		// Otherwise, returns a useless slope (0.1)
 		else return 0.1;
+
+	}
+
+	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
+
+		LinkedList<Tile> returner = new LinkedList<Tile>();
+		int x1 = tile1.getx();
+		int y1 = tile1.gety();
+		int x2 = tile2.getx();
+		int y2 = tile2.gety();
+
+		if (slope == 0) {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+			assert (y1 == y2);
+
+			for (int i = start.getx() + 1; i < end.getx(); i++) {
+
+				// If the current color and the first tile next to the possible viable tile are the same, no
+				int checkNum = (tile1 == start) ? tile1.getx() + 1 : tile1.getx() - 1;
+				if ((i == checkNum) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[y1][i]);
+
+			}
+
+
+
+		} else if ((slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY)) {
+
+			Tile start = (y1 < y2) ? tile1 : tile2;
+			Tile end = (y1 < y2) ? tile2 : tile1;
+			assert (x1 == x2);
+
+			for (int i = start.gety() + 1; i < end.gety(); i++) {
+
+				int checkNum = (tile1 == start) ? tile1.gety() + 1 : tile1.gety() - 1;
+				if ((i == checkNum) && (boardState[i][x1].getColor() != null) && (boardState[i][x1].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[i][x1]);
+			}
+
+			// Can have a smaller x OR a smaller y
+		} else if (slope == 1) {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+
+			for (int i = 1; i < (end.getx() - start.getx()); i++) {
+
+				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
+				if ((i == checkNum) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() + i][start.getx() + i]);
+			}
+
+		} else {
+
+			Tile start = (x1 < x2) ? tile1 : tile2;
+			Tile end = (x1 < x2) ? tile2 : tile1;
+
+			for (int i = 1; i < (end.getx() - start.getx()); i++) {
+
+				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
+				if ((i == checkNum) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() - i][start.getx() + i]);
+			}
+		}
+
+		return returner;
+
+	}
+
+	// Checks to see if all the tiles between tile1 and tile2 are colored and toggled, so they can be flipped
+	public boolean tilesAreFilled(Tile tile1, Tile tile2, double slope) {
+
+		LinkedList<Tile> between = getBetweenTiles(tile1, tile2, slope);
+		boolean notAllTheSame = false;
+
+		for (Tile current : between) {
+
+			if (current == null) return false;
+			if (current.getColor() == null) return false;
+			if (!current.getColor().equals(tile2.getColor())) notAllTheSame = true;
+
+		}
+
+		return notAllTheSame;
 
 	}
 
@@ -354,101 +456,6 @@ public class OthelloGame {
 
 	}
 
-	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
-
-		LinkedList<Tile> returner = new LinkedList<Tile>();
-		int x1 = tile1.getx();
-		int y1 = tile1.gety();
-		int x2 = tile2.getx();
-		int y2 = tile2.gety();
-
-		if (slope == 0) {
-
-			Tile start = (x1 < x2) ? tile1 : tile2;
-			Tile end = (x1 < x2) ? tile2 : tile1;
-			assert (y1 == y2);
-
-			for (int i = start.getx() + 1; i < end.getx(); i++) {
-
-				// If the current color and the first tile next to the possible viable tile are the same, no
-				int checkNum = (tile1 == start) ? tile1.getx() + 1 : tile1.getx() - 1;
-				if ((i == checkNum) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
-					returner.add(null);
-				else
-					returner.add(boardState[y1][i]);
-
-			}
-
-
-
-		} else if ((slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY)) {
-
-			Tile start = (y1 < y2) ? tile1 : tile2;
-			Tile end = (y1 < y2) ? tile2 : tile1;
-			assert (x1 == x2);
-
-			for (int i = start.gety() + 1; i < end.gety(); i++) {
-
-				int checkNum = (tile1 == start) ? tile1.gety() + 1 : tile1.gety() - 1;
-				if ((i == checkNum) && (boardState[i][x1].getColor() != null) && (boardState[i][x1].getColor().equals(current)))
-					returner.add(null);
-				else
-					returner.add(boardState[i][x1]);
-			}
-
-			// Can have a smaller x OR a smaller y
-		} else if (slope == 1) {
-
-			Tile start = (x1 < x2) ? tile1 : tile2;
-			Tile end = (x1 < x2) ? tile2 : tile1;
-
-			for (int i = 1; i < (end.getx() - start.getx()); i++) {
-
-				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
-				if ((i == checkNum) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
-						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
-					returner.add(null);
-				else
-					returner.add(boardState[start.gety() + i][start.getx() + i]);
-			}
-
-		} else {
-
-			Tile start = (x1 < x2) ? tile1 : tile2;
-			Tile end = (x1 < x2) ? tile2 : tile1;
-
-			for (int i = 1; i < (end.getx() - start.getx()); i++) {
-
-				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
-				if ((i == checkNum) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
-						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))
-					returner.add(null);
-				else
-					returner.add(boardState[start.gety() - i][start.getx() + i]);
-			}
-		}
-
-		return returner;
-
-	}
-
-	public boolean tilesAreFilled(Tile tile1, Tile tile2, double slope) {
-
-		LinkedList<Tile> between = getBetweenTiles(tile1, tile2, slope);
-		boolean notAllTheSame = false;
-
-		for (Tile current : between) {
-
-			if (current == null) return false;
-			if (current.getColor() == null) return false;
-			if (!current.getColor().equals(tile2.getColor())) notAllTheSame = true;
-
-		}
-
-		return notAllTheSame;
-
-	}
-	
 	public void possibleMove()
 	{
 		int[][] chooseThis = null; //this will be the move chosen
