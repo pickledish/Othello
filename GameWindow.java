@@ -17,6 +17,7 @@ public class GameWindow {
 	GameButton[][] buttons;
 	JLabel redCount;
 	JLabel blueCount;
+	JLabel current;
 	OthelloGame game;
 
 	public GameWindow() {}
@@ -91,12 +92,17 @@ public class GameWindow {
 			}
 		});
 
+		current = new JLabel("Current move: blue");
+		current.setFont(new Font("Serif", Font.PLAIN, 18));
+
 		c.gridx = 0;
 		options.add(redCount, c);
 		c.gridx++;
 		options.add(blueCount, c);
 		c.gridx++;
 		options.add(reset, c);
+		c.gridx++;
+		options.add(current, c);
 
 
 		c.gridy = 0;
@@ -126,9 +132,10 @@ public class GameWindow {
 		}
 
 
-		// Updates the counts of the red and blue labels
+		// Updates the counts of the red and blue labels, and current move
 		redCount.setText("Red Tiles: " + game.getTiles("red") + "\t\t\t");
 		blueCount.setText("Blue Tiles: " + game.getTiles("blue") + "\t\t\t");
+		current.setText(("Current move: " + game.current));
 
 		// Checks to see if every button on the board is toggled. If it is, the game is over
 		if (toggled == 64) {

@@ -292,9 +292,7 @@ public class OthelloGame {
 	public int rowColorChanger(Tile pressed, boolean change) {
 		int count = 0;
 		String currColor = current;
-		String otherColor = "red";
-		if (current == "red")
-			otherColor = "blue";
+		String otherColor = (current.equals("red")) ? "blue" : "red";
 
 		int myX = pressed.getx();
 		int myY = pressed.gety();
