@@ -36,7 +36,7 @@ public class GameWindow {
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				buttons[i][j] = new GameButton("", j, i);
-				buttons[i][j].setPreferredSize(new Dimension(80, 80));
+				buttons[i][j].setPreferredSize(new Dimension(60, 60));
 
 				buttons[i][j].addActionListener(new ActionListener() {
 					@Override

@@ -70,7 +70,6 @@ public class OthelloGame {
 			current = current.equals("blue") ? "red" : "blue";
 
 			// Tests to see if there are any available moves following the press. If not, the next player passes turn
-			// TODO: Might not work, hard to test
 			if (noMoves(getViableMoves())) {
 				JOptionPane.showMessageDialog(null, "No Moves available! " + current + "skips turn!",
 						"No moves!", JOptionPane.PLAIN_MESSAGE);
