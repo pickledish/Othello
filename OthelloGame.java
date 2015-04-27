@@ -19,7 +19,7 @@ public class OthelloGame {
 
 	// BoardState is the game board, and flip keeps track of whose turn it is! Every click --> flip changes
 	Tile[][] boardState;
-	String current = "red";
+	String current = "blue";
 	TreeSet<Tile> possibleMove=null;
 
 	public OthelloGame(Tile[][] buttons) {
@@ -325,7 +325,8 @@ public class OthelloGame {
 			for (int i = start.getx() + 1; i < end.getx(); i++) {
 
 				// If the current color and the first tile next to the possible viable tile are the same, no
-				if ((i == end.getx() - 1) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
+				int checkNum = (tile1 == start) ? tile1.getx() + 1 : tile1.getx() - 1;
+				if ((i == checkNum) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
 					returner.add(null);
 				else
 					returner.add(boardState[y1][i]);
@@ -342,7 +343,8 @@ public class OthelloGame {
 
 			for (int i = start.gety() + 1; i < end.gety(); i++) {
 
-				if ((i == end.gety() - 1) && (boardState[i][x1].getColor() != null) &&(boardState[i][x1].getColor().equals(current)))
+				int checkNum = (tile1 == start) ? tile1.gety() + 1 : tile1.gety() - 1;
+				if ((i == checkNum) && (boardState[i][x1].getColor() != null) && (boardState[i][x1].getColor().equals(current)))
 					returner.add(null);
 				else
 					returner.add(boardState[i][x1]);
@@ -354,25 +356,30 @@ public class OthelloGame {
 			Tile start = (x1 < x2) ? tile1 : tile2;
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
-			for (int i = 1; i < (end.getx() - start.getx()); i++)
+			for (int i = 1; i < (end.getx() - start.getx()); i++) {
 
-				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
+				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
+				if ((i == checkNum) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
 						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
 					returner.add(null);
 				else
 					returner.add(boardState[start.gety() + i][start.getx() + i]);
+			}
 
 		} else {
 
 			Tile start = (x1 < x2) ? tile1 : tile2;
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
-			for (int i = 1; i < (end.getx() - start.getx()); i++)
-				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
+			for (int i = 1; i < (end.getx() - start.getx()); i++) {
+
+				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
+				if ((i == checkNum) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
 						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))
 					returner.add(null);
 				else
 					returner.add(boardState[start.gety() - i][start.getx() + i]);
+			}
 		}
 
 		return returner;
