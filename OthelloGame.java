@@ -20,16 +20,18 @@ public class OthelloGame {
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
 	String current;
+	boolean ai;
 
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
-	// The constructor! Does nothing, really
-	public OthelloGame(Tile[][] buttons, String c) {
+	// The constructor! Sets up the global variables and states for this game
+	public OthelloGame(Tile[][] buttons, String c, boolean ai) {
 
 		boardState = buttons;
 		current = c;
+		this.ai = ai;
 
 	}
 
@@ -72,7 +74,6 @@ public class OthelloGame {
 				JOptionPane.showMessageDialog(null, "No Moves available! " + current + " skips turn!",
 						"No moves!", JOptionPane.PLAIN_MESSAGE);
 				current = current.equals("blue") ? "red" : "blue";
-
 			}
 		}
 	}

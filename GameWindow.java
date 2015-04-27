@@ -55,7 +55,12 @@ public class GameWindow {
 			}
 		}
 
-		game = new OthelloGame(buttons, "blue");
+		int ai = JOptionPane.showConfirmDialog(null, "Do you want an AI to play the othe side?",
+				"Artificial Intelligence Option", JOptionPane.YES_NO_OPTION);
+
+		game = (ai == JOptionPane.YES_OPTION) ?
+				new OthelloGame(buttons, "blue", true) : new OthelloGame(buttons, "blue", false);
+
 		game.setUp();
 
 		// Makes sure that all buttons that should be disabled, ARE disabled for the first opening
