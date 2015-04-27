@@ -127,9 +127,9 @@ public class OthelloGame {
 		int x2 = tile2.getx();
 		int y2 = tile2.gety();
 
-		double slope = Math.abs((y2 - y1) / (double) (x2 - x1));
+		double slope = (y2 - y1) / (double) (x2 - x1);
 
-		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == 1) || (slope == -1))
+		if (((slope == 0) || (slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY) || (slope == 1) || (slope == -1))
 				&& ((Math.abs(x1 - x2) > 1) || (Math.abs(y2 - y1) > 1)))
 			return slope;
 
@@ -318,21 +318,31 @@ public class OthelloGame {
 			Tile end = (x1 < x2) ? tile2 : tile1;
 			assert (y1 == y2);
 
-			for (int i = start.getx() + 1; i < end.getx(); i++)
-				returner.add(boardState[y1][i]);
+			for (int i = start.getx() + 1; i < end.getx(); i++) {
+
+				// If the current color and the first tile next to the possible viable tile are the same, no
+				if ((i == end.getx() - 1) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[y1][i]);
+
+			}
 
 
 
-		} else if (slope == Double.POSITIVE_INFINITY) {
+		} else if ((slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY)) {
 
 			Tile start = (y1 < y2) ? tile1 : tile2;
 			Tile end = (y1 < y2) ? tile2 : tile1;
 			assert (x1 == x2);
 
-			for (int i = start.gety() + 1; i < end.gety(); i++)
-				returner.add(boardState[i][x1]);
+			for (int i = start.gety() + 1; i < end.gety(); i++) {
 
-
+				if ((i == end.gety() - 1) && (boardState[i][x1].getColor() != null) &&(boardState[i][x1].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[i][x1]);
+			}
 
 		// Can have a smaller x OR a smaller y
 		} else if (slope == 1) {
@@ -341,8 +351,12 @@ public class OthelloGame {
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++)
-				returner.add(boardState[start.gety() + i][start.getx() + i]);
 
+				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() + i][start.getx() + i]);
 
 		} else {
 
@@ -350,8 +364,11 @@ public class OthelloGame {
 			Tile end = (x1 < x2) ? tile2 : tile1;
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++)
-				returner.add(boardState[start.gety() - i][start.getx() + i]);
-
+				if ((i == (end.getx() - start.getx()) - 1) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
+						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))
+					returner.add(null);
+				else
+					returner.add(boardState[start.gety() - i][start.getx() + i]);
 		}
 
 		return returner;
@@ -365,6 +382,7 @@ public class OthelloGame {
 
 		for (Tile current : between) {
 
+			if (current == null) return false;
 			if (current.getColor() == null) return false;
 			if (!current.getColor().equals(tile2.getColor())) notAllTheSame = true;
 
@@ -373,9 +391,12 @@ public class OthelloGame {
 		return notAllTheSame;
 
 	}
-	
-	public int[][] bestMove()
+
+	//region Som
+	/*
+	public int[][] bestMove(boolean[][] availableMoves)
 	{
+<<<<<<< HEAD
 		int[][] chooseThis = 0; //this will be the move chosen
 		boolean[][] availableMoves = getViableMoves(); //finds all possible moves
 		
@@ -383,6 +404,10 @@ public class OthelloGame {
 		boolean[][] tempBoard = new boolean [availableMove.length][availableMove.length];
 		
 		for(int i=0;i<availableMoves.length;i++) //iterate through all squares on the board
+=======
+		int[][] chooseThis = new int[8][8];
+		for(int i=0;i<availableMoves.length;i++)
+>>>>>>> f6e713530b451dda7f6a8a543fc584eed13374fe
 		{
 			for(int j=0;j<availableMoves.length;i++)
 			{
@@ -402,6 +427,18 @@ public class OthelloGame {
 				//after tree of simulated moves are made, second recursive function
 				//transverse tree backwards, calculating move with best score
 					
+					for(int i = 0; i<list of possible moves;i++)
+						{
+
+							insert to priority heap: available moves created
+							after choosing a particular square
+
+						}
+					return top choice
+				
+				
+				} 
+
 					
 				}
 				else
@@ -467,5 +504,7 @@ public class OthelloGame {
 		
 		return chooseThis;
 	}
+						*/
+	//endregion
 	
 }
