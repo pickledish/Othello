@@ -72,11 +72,19 @@ public class GameWindow {
 	public void refreshBoard() {
 
 		boolean viable[][] = game.getViableMoves();
+		int toggled = 0;
+
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (!buttons[i][j].getToggled()) buttons[i][j].setEnabled(false);
+				else toggled++;
 				if (viable[i][j]) buttons[i][j].setEnabled(true);
 			}
+		}
+
+		if (toggled == 64){
+			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
+			System.exit(0);
 		}
 
 	}

@@ -10,6 +10,9 @@ import java.util.TreeSet;
  * STAYS TOTALLY SEPARATE FROM THE GAMEWINDOW CLASS / ALL GUI ELEMENTS PLS
  *
  * But yeah, logic stuff goes here. Each method should be explained well enough, right?
+ *
+ * TODO What happens when a player has no viable moves?
+ *
  */
 
 public class OthelloGame {
@@ -81,9 +84,8 @@ public class OthelloGame {
 	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips flip
 	public void tileClicked(Tile pressed) {
 
-		rowColorChanger(pressed);
-
 		if (!pressed.getToggled()) {
+			rowColorChanger(pressed);
 			pressed.toggle();
 			pressed.setColor(current);
 
