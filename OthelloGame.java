@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -7,14 +6,12 @@ import java.util.TreeMap;
 
 /**
  * Created by Brandon on 4/21/15.
- *1
+ *
  * The game class! Manages each in-game part of the project
  *
  * STAYS TOTALLY SEPARATE FROM THE GAMEWINDOW CLASS / ALL GUI ELEMENTS PLS
  *
  * But yeah, logic stuff goes here. Each method should be explained well enough, right?
- *
- * TODO What happens when a player has no viable moves?
  *
  */
 
@@ -22,16 +19,17 @@ public class OthelloGame {
 
 	// BoardState is the game board, and current keeps track of whose turn it is! Every click --> current changes
 	Tile[][] boardState;
-	String current = "blue";
+	String current;
 
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] availableMoves;
 
 	// The constructor! Does nothing, really
-	public OthelloGame(Tile[][] buttons) {
+	public OthelloGame(Tile[][] buttons, String c) {
 
 		boardState = buttons;
+		current = c;
 
 	}
 
@@ -71,7 +69,7 @@ public class OthelloGame {
 
 			// Tests to see if there are any available moves following the press. If not, the next player passes turn
 			if (noMoves(getViableMoves())) {
-				JOptionPane.showMessageDialog(null, "No Moves available! " + current + "skips turn!",
+				JOptionPane.showMessageDialog(null, "No Moves available! " + current + " skips turn!",
 						"No moves!", JOptionPane.PLAIN_MESSAGE);
 				current = current.equals("blue") ? "red" : "blue";
 
@@ -192,6 +190,7 @@ public class OthelloGame {
 
 	}
 
+	// Returns a linked list of all tiles between tile1 and tile2, as long as they're all toggled (colored)
 	public LinkedList<Tile> getBetweenTiles(Tile tile1, Tile tile2, double slope) {
 
 		LinkedList<Tile> returner = new LinkedList<Tile>();
@@ -204,11 +203,10 @@ public class OthelloGame {
 
 			Tile start = (x1 < x2) ? tile1 : tile2;
 			Tile end = (x1 < x2) ? tile2 : tile1;
-			assert (y1 == y2);
 
 			for (int i = start.getx() + 1; i < end.getx(); i++) {
 
-				// If the current color and the first tile next to the possible viable tile are the same, no
+				// If the current color and the first tile next to the possible viable tile are the same, return null
 				int checkNum = (tile1 == start) ? tile1.getx() + 1 : tile1.getx() - 1;
 				if ((i == checkNum) && (boardState[y1][i].getColor() != null) && (boardState[y1][i].getColor().equals(current)))
 					returner.add(null);
@@ -217,16 +215,14 @@ public class OthelloGame {
 
 			}
 
-
-
 		} else if ((slope == Double.POSITIVE_INFINITY) || (slope == Double.NEGATIVE_INFINITY)) {
 
 			Tile start = (y1 < y2) ? tile1 : tile2;
 			Tile end = (y1 < y2) ? tile2 : tile1;
-			assert (x1 == x2);
 
 			for (int i = start.gety() + 1; i < end.gety(); i++) {
 
+				// If the current color and the first tile next to the possible viable tile are the same, return null
 				int checkNum = (tile1 == start) ? tile1.gety() + 1 : tile1.gety() - 1;
 				if ((i == checkNum) && (boardState[i][x1].getColor() != null) && (boardState[i][x1].getColor().equals(current)))
 					returner.add(null);
@@ -234,7 +230,6 @@ public class OthelloGame {
 					returner.add(boardState[i][x1]);
 			}
 
-			// Can have a smaller x OR a smaller y
 		} else if (slope == 1) {
 
 			Tile start = (x1 < x2) ? tile1 : tile2;
@@ -242,6 +237,7 @@ public class OthelloGame {
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++) {
 
+				// If the current color and the first tile next to the possible viable tile are the same, return null
 				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
 				if ((i == checkNum) && (boardState[start.gety() + i][start.getx() + i].getColor() != null) &&
 						(boardState[start.gety() + i][start.getx() + i].getColor().equals(current)))
@@ -257,6 +253,7 @@ public class OthelloGame {
 
 			for (int i = 1; i < (end.getx() - start.getx()); i++) {
 
+				// If the current color and the first tile next to the possible viable tile are the same, return null
 				int checkNum = (tile1 == start) ? 1 : (tile1.getx() - tile2.getx() - 1);
 				if ((i == checkNum) && (boardState[start.gety() - i][start.getx() + i].getColor() != null) &&
 						(boardState[start.gety() - i][start.getx() + i].getColor().equals(current)))

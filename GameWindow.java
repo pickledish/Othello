@@ -3,7 +3,7 @@
  *
  * The GUI class! Handles all visual parts of the project
  *
- * Makes a shitton of GameButtons and throws them onto an 8x8 board for all to see
+ * Makes a bunch of GameButtons and throws them onto an 8x8 board on the screen GUI
  *
  */
 
@@ -21,7 +21,7 @@ public class GameWindow {
 
 	public GameWindow() {}
 
-	// Makes the window, using GridBagLayout cause best layout
+	// Makes the window, using GridBagLayout, and adds all tiles and labels to it
 	public void drawWindow() {
 
 		window.setLayout(new GridBagLayout());
@@ -32,7 +32,7 @@ public class GameWindow {
 
 		buttons = new GameButton[8][8];
 
-		// Big-ass button adding loop! Also adds the actionListeners so they can be clicked
+		// The button adding loop! Also adds the actionListeners so they can be clicked
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				buttons[i][j] = new GameButton("", j, i);
@@ -55,7 +55,7 @@ public class GameWindow {
 			}
 		}
 
-		game = new OthelloGame(buttons);
+		game = new OthelloGame(buttons, "blue");
 		game.setUp();
 
 		// Makes sure that all buttons that should be disabled, ARE disabled for the first opening
@@ -66,7 +66,7 @@ public class GameWindow {
 			}
 		}
 
-
+		// Adds a bar at the bottom that contains counts for red and blue tiles, as well as a board reset button
 		JPanel options = new JPanel();
 		options.setLayout(new GridBagLayout());
 
@@ -121,9 +121,11 @@ public class GameWindow {
 		}
 
 
+		// Updates the counts of the red and blue labels
 		redCount.setText("Red Tiles: " + game.getTiles("red") + "\t\t\t");
 		blueCount.setText("Blue Tiles: " + game.getTiles("blue") + "\t\t\t");
 
+		// Checks to see if every button on the board is toggled. If it is, the game is over
 		if (toggled == 64) {
 			JOptionPane.showMessageDialog(null, "Game is over!", "Done", JOptionPane.PLAIN_MESSAGE);
 			System.exit(0);
