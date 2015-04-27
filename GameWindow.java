@@ -159,12 +159,27 @@ public class GameWindow {
 			System.exit(0);
 		}
 
-		System.out.print("Press a button or enter move: ");
+		window.pack();
+
+		System.out.print("Enter move: ");
 
 		Scanner input = new Scanner(System.in);
-		String s = input.nextLine();
+		parseAndMove(input.nextLine());
 
-		window.pack();
+	}
+
+	// Takes in a string of 2 integers and makes a move based on them
+	public void parseAndMove(String move) {
+
+		int x = Integer.parseInt(move.substring(0,1));
+		int y = Integer.parseInt(move.substring(2,3));
+
+		boolean[][] viable = game.getViableMoves();
+
+		if (viable[7-y][x]) game.tileClicked(buttons[7-y][x]);
+		else JOptionPane.showMessageDialog(null, "Move not possible", "No", JOptionPane.PLAIN_MESSAGE);
+
+		refreshBoard();
 
 	}
 }
