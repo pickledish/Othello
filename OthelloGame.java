@@ -59,7 +59,7 @@ public class OthelloGame {
 		boardState[4][3].toggle();
 		boardState[4][3].setColor("blue");
 
-		if (current == myColor) System.out.println(compMove());
+		if (current == myColor) System.out.println("AI guess for a move: " + compMove());
 
 	}
 
@@ -83,8 +83,7 @@ public class OthelloGame {
 				current = current.equals("blue") ? "red" : "blue";
 
 			}
-			if (current == myColor)
-				System.out.println(compMove());
+			if (current == myColor) System.out.println("AI guess for a move: " + compMove());
 		}
 	}
 
@@ -491,7 +490,7 @@ public class OthelloGame {
 		{
 			for (int j = 0; j < availableMoves.length; i++) {
 
-				if (availableMoves[i][j] == true) {
+				if (availableMoves[i][j]) {
 
 					//make a possible prospective move
 					rowColorChanger(boardState[i][j], true);
