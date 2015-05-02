@@ -367,7 +367,7 @@ public class OthelloGame {
 
 	
 
-	
+	// START VIABLE MOVE CODE
 	
 	public boolean[][] getViableMoves() {
 
@@ -550,9 +550,6 @@ public class OthelloGame {
 		return notAllTheSame;
 
 	}
-}
-	}
-			}
-		return (bestX + " " + bestY);
-	}
+
+	// END VIABLE MOVE CODE
 }
