@@ -1,0 +1,73 @@
+String[] path = new String[depth]
+
+public int minimax(Tile[][] boardState, int depth, boolean maximizing) {
+
+//this method is used to maximize the number of tiles we want and minimize
+//the tiles that the opponent will acquire
+
+	boolean[][] possibilities = getAvailableMoves(boardState); //possible states after a move
+	boolean leaf = true; 
+	for (boolean[] row : possibilities) //checks through all the possibilites and see if its false
+		for (boolean spot : row)
+			if (row) leaf = false;
+
+	if ((depth == 0) || (leaf == true)) //if its a leaf node, return because it will not have
+		return score(boardState) //any children
+
+	if (maximizing == true) { //if true, it WHO'S TURN IS THIS AGAIN?
+
+		int bestValue = -1000;
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (possibilities[i][j] == true) {
+
+					newState = minimax(dummy(boardState[i][j]), depth-1, false); 
+					//a new state that creates that the board would look like after a certain move
+					newValue = score(newState);
+					//finds the score of the new state
+
+					//finds which of the two values have more of the tiles we want maximized
+					if (newValue > bestValue) {
+
+						bestValue = newValue;
+						path[depth] = new String(i + " " + j);
+
+					}
+				}
+			}
+		}
+		return bestValue; //return state that provides most tiles we want
+
+	}
+	if (maximizing == false) { //WHOS TURN IS THIS????
+
+		int bestValue = 1000;
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				if (possibilities[i][j] == true) {
+
+					newState = minimax(dummy(boardState[i][j]), depth-1, true);
+					//a new state that creates that the board would look like after a certain move
+					newValue = score(newState);
+					//finds the score of the new state
+
+					//finds which of the two values have more of the tiles we want maximized
+					if (newValue < bestValue) {
+
+						bestValue = newValue;
+						path[depth] = new String(i + " " + j);
+
+					}
+				}
+			}
+		}
+		return bestValue;
+		//returns state that provides the most tiles we want
+	}
+
+}
+
+
+// ** Note: Score function is literally just the number of black tiles in the boardState
