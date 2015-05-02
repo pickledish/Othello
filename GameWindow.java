@@ -71,7 +71,8 @@ public class GameWindow {
 		game.setUp();
 
 		// Makes sure that all buttons that should be disabled, ARE disabled for the first opening
-		boolean viable[][] = game.getViableMoves();
+		game.getViableMoves();
+		boolean viable[][] = game.isAvailable;
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
 				if (!viable[i][j]) buttons[i][j].setEnabled(false);
@@ -129,7 +130,8 @@ public class GameWindow {
 	// For use after a button is pressed! Updates the board to represent all newly enabled/disabled buttons
 	static public void refreshBoard() {
 
-		boolean viable[][] = game.getViableMoves();
+		game.getViableMoves();
+		boolean viable[][] = game.isAvailable;
 		int toggled = 0;
 
 		for (int i = 0; i < 8; i++) {
@@ -163,47 +165,7 @@ public class GameWindow {
 		}
 
 		window.pack();
-		(new textWorker()).execute();
 
-	}
-
-	// Takes in a string of 2 integers and makes a move based on them
-	public static void parseAndMove(Pair<Integer, Integer> move) {
-
-		boolean[][] viable = game.getViableMoves();
-
-		if (viable[7-(move.snd)][move.fst]) game.tileClicked(buttons[7-(move.snd)][move.fst]);
-		else JOptionPane.showMessageDialog(null, "Move not possible", "No", JOptionPane.PLAIN_MESSAGE);
-
-		refreshBoard();
 
 	}
 }
-
-// Uses multi-threading sure that both the text input and GUI input work simultaneously!
- class textWorker extends SwingWorker<Pair<Integer, Integer>, Integer> {
-
-	 @Override
-	 // Waits over here for the user to hit a button or enter a pair of coordinates
-	 protected Pair<Integer, Integer> doInBackground() throws Exception {
-		 System.out.println("Press a button or enter a move: ");
-		 String input = (new Scanner(System.in)).nextLine();
-
-		 int x = Integer.parseInt(input.substring(0,1));
-		 int y = Integer.parseInt(input.substring(2,3));
-
-		 return new Pair<Integer, Integer>(x,y);
-	 }
-
-	 protected void done() {
-
-		 try {
-			 GameWindow.parseAndMove(get());
-		 } catch (InterruptedException e) {
-			 e.printStackTrace();
-		 } catch (ExecutionException e) {
-			 e.printStackTrace();
-		 }
-
-	 }
- }
