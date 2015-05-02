@@ -82,7 +82,6 @@ public class OthelloGame {
 		
 	
 	}
-	
 
 	// Clears the board, then sets the middle 4 tiles to their starting colors, and toggles each to disabled
 	public void setUp() {
