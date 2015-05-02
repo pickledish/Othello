@@ -23,11 +23,7 @@ public class OthelloGame {
 	String myColor;
 	boolean ai;
 	long start = System.currentTimeMillis(); //start timer
-	long end1minute = start + 60*1000; // 60 seconds * 1000 ms/sec
-	long end4minute = start + 240*1000; // 240 seconds * 1000 ms/sec
-	long end16sec = start + 16*1000; // 16 seconds * 1000 ms/sec
-	long end4sec = start + 4*1000; // 4 seconds * 1000 ms/sec
-	long end1sec = start + 1000; // 1 seconds * 1000 ms/sec
+	//this is for the timer method
 	
 	// These are Som's things but I'm sure they're important!
 	TreeMap<Tile, Integer> possibleMove=null;
@@ -44,43 +40,6 @@ public class OthelloGame {
 		else
 			myColor = "red";
 
-	}
-	
-	public void timer1sec(){
-		while (System.currentTimeMillis() < end1sec)
-		{
-		    // run
-		}
-	}
-	
-	public void timer4sec(){
-		while (System.currentTimeMillis() < end4sec)
-		{
-		    // run
-		}
-	}
-	
-	public void timer16sec(){
-		while (System.currentTimeMillis() < end16sec)
-		{
-		    // run
-		}
-	}
-	
-	public void timer1minute(){
-		while (System.currentTimeMillis() < end1minute)
-		{
-		    // run
-		}
-	}
-	
-	public void timer4minute(){
-		while (System.currentTimeMillis() < end4minute)
-		{
-		    // run
-		}
-		
-	
 	}
 
 	// Clears the board, then sets the middle 4 tiles to their starting colors, and toggles each to disabled
