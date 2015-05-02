@@ -27,6 +27,16 @@ public class GameButton extends JButton implements Tile {
 		this.y = y;
 	}
 
+	public GameButton(String text, boolean t, String c, int x, int y) {
+
+		super(text);
+		toggled = t;
+		color = c;
+		this.x = x;
+		this.y = y;
+
+	}
+
 	// Sets up the button to be colored. Or, if the color is null, resets the button to its uncolored state
 	public void setColor(String col) {
 
@@ -72,6 +82,11 @@ public class GameButton extends JButton implements Tile {
 	@Override
 	public int gety() {
 		return y;
+	}
+
+	@Override
+	public GameButton returnCopy() {
+		return (new GameButton("", toggled, color, x, y));
 	}
 
 }

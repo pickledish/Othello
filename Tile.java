@@ -17,4 +17,6 @@ public interface Tile {
 	int getx();
 	int gety();
 
+	Tile returnCopy();
+
 }

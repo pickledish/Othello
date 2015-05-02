@@ -26,7 +26,6 @@ public class OthelloGame {
 	String myColor;
 
 	// These are Som's things but I'm sure they're important!
-	TreeMap<Tile, Integer> possibleMove=null;
 	boolean[][] isAvailable = new boolean[8][8];
 
 	// The constructor! Does nothing, really
@@ -63,6 +62,18 @@ public class OthelloGame {
 
 	}
 
+	public Tile[][] getDeepCopy() {
+
+		Tile[][] returner = new Tile[8][8];
+
+		for (int i = 0; i < 8; i++) {
+			for (int j = 0; j < 8; j++) {
+				returner[i][j] = boardState[i][j].returnCopy();
+			}
+		}
+		return returner;
+	}
+
 	// The actionEvent we add to each button in GameWindow! Sets the button color, disables it, and flips current
 	public void tileClicked(Tile pressed) {
 
@@ -84,6 +95,8 @@ public class OthelloGame {
 				current = current.equals("blue") ? "red" : "blue";
 
 			}
+
+			if (current.equals("red")) System.out.println(minimaxHelper(4));
 		}
 	}
 
@@ -133,7 +146,8 @@ public class OthelloGame {
 
 	public Tile[][] dummy(Tile pressed) {
 		
-		OthelloGame temp = this;
+		Tile[][] copy = getDeepCopy();
+		OthelloGame temp = new OthelloGame(copy, current, ai, false);
 		temp.rowColorChanger(pressed, true);
 		return temp.boardState;
 		
@@ -364,9 +378,6 @@ public class OthelloGame {
 		return (bestX + " " + bestY);
 	}
 
-
-	
-
 	// START VIABLE MOVE CODE
 	
 	public boolean[][] getViableMoves() {
@@ -552,4 +563,96 @@ public class OthelloGame {
 	}
 
 	// END VIABLE MOVE CODE
+
+	String[] path;
+	public String minimaxHelper(int depth) {
+
+		path = new String[depth];
+		boolean player = (current.equals("blue"));
+		minimax(this.boardState, depth, player);
+
+		return path[depth-1];
+
+	}
+
+
+	public int minimax(Tile[][] boardState, int depth, boolean maximizing) {
+
+//this method is used to maximize the number of tiles we want and minimize
+//the tiles that the opponent will acquire
+
+		String current = (maximizing) ? "blue" : "red";
+		OthelloGame temp = new OthelloGame(boardState, current, false, false);
+		boolean[][] possibilities = temp.getViableMoves(); //possible states after a move
+		boolean leaf = true;
+
+		for (boolean[] row : possibilities) //checks through all the possibilites and see if its false
+			for (boolean spot : row)
+				if (spot) leaf = false;
+
+		if ((depth == 0) || (leaf)) //if its a leaf node, return because it will not have
+			return score(boardState); //any children
+
+		if (maximizing) { //if true, it WHO'S TURN IS THIS AGAIN?
+
+			int bestValue = -1000;
+
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (possibilities[i][j]) {
+
+						int newValue = minimax(dummy(boardState[i][j]), depth-1, false);
+						//a new state that creates that the board would look like after a certain move
+
+						//finds which of the two values have more of the tiles we want maximized
+						if (newValue > bestValue) {
+
+							bestValue = newValue;
+							path[depth-1] = (j + " " + (7-i));
+
+						}
+					}
+				}
+			}
+			return bestValue; //return state that provides most tiles we want
+
+		}
+		else { //WHOS TURN IS THIS???? The minimizing player's turn
+
+			int bestValue = 1000;
+
+			for (int i = 0; i < 8; i++) {
+				for (int j = 0; j < 8; j++) {
+					if (possibilities[i][j]) {
+
+						int newValue = minimax(dummy(boardState[i][j]), depth-1, true);
+						//a new state that creates that the board would look like after a certain move
+
+						//finds which of the two values have more of the tiles we want maximized
+						if (newValue < bestValue) {
+
+							bestValue = newValue;
+							path[depth-1] = (j + " " + (7-i));
+
+						}
+					}
+				}
+			}
+			return bestValue;
+			//returns state that provides the most tiles we want
+		}
+
+	}
+
+	public int score(Tile[][] boardState) {
+
+		// returns the number of blue tiles on the board
+		return -1;
+
+	}
+
+
+// ** Note: Score function is literally just the number of black tiles in the boardState
+
+
 }
