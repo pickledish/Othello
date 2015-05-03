@@ -1,7 +1,7 @@
 public alphabeta(currentTile, depth, alpha, beta, maximizingPlayer)
 {
 
-	Tile bestMove;
+	int bestMove;
 	
 	if(depth=0||currentTile=leaf)
 	{
@@ -13,7 +13,7 @@ public alphabeta(currentTile, depth, alpha, beta, maximizingPlayer)
 	if(maximizngPlayer==true)
 	{
 
-		bestMove = Negative infinity;
+		bestMove = -1000;
 		
 		for (int i = 0; i < 8; i++) 
 		{
@@ -33,7 +33,7 @@ public alphabeta(currentTile, depth, alpha, beta, maximizingPlayer)
 	}
 	else
 	{	
-		bestMove = positive infinity;
+		bestMove = 1000;
 		
 		for (int i = 0; i < 8; i++) 
 		{
@@ -51,5 +51,7 @@ public alphabeta(currentTile, depth, alpha, beta, maximizingPlayer)
 		}
 		return bestMove;
 	}
+
+//initial call: 
 
 }
