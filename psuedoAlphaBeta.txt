@@ -1,0 +1,55 @@
+public alphabeta(currentTile, depth, alpha, beta, maximizingPlayer)
+{
+
+	Tile bestMove;
+	
+	if(depth=0||currentTile=leaf)
+	{
+
+		return currentTile;
+
+	}
+	
+	if(maximizngPlayer==true)
+	{
+
+		bestMove = Negative infinity;
+		
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++)
+				{
+
+					bestMove = max(bestMove, alphabeta(child, depth-1,alpha, beta, False));
+					alpha = max(alpha, bestMove);	
+
+				}
+			if(beta<=alpha)
+				{	
+					break; //beta cutoff
+				}
+		}
+		return bestMove;
+	}
+	else
+	{	
+		bestMove = positive infinity;
+		
+		for (int i = 0; i < 8; i++) 
+		{
+			for (int j = 0; j < 8; j++)
+				{
+
+					bestMove = min(bestMove, alphabeta(child, depth-1,alpha, beta, False));
+					beta = min(beta, bestMove);	
+
+				}
+			if(beta<=alpha)
+				{	
+					break; //alpha cutoff
+				}
+		}
+		return bestMove;
+	}
+
+}
